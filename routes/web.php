@@ -15,4 +15,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+
+
+    
+});
+
+
+ Route::get('/edit_expense',function(){
+     return view('expense/edit_expense');
+ });
+ Route::get('/register',function(){
+     return view('user/member_register');
+ });
+
+ Route::get('/login',function(){
+    return view('user/login');
 });
