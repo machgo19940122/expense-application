@@ -31,3 +31,5 @@ Route::get('/', function () {
  Route::get('/login',function(){
     return view('user/login');
 });
+
+Route::get('/tasks', [App\Http\Controllers\TaskController::class, 'index'])->name('tasks');
