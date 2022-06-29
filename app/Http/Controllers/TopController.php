@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
  
-use App\Models\Task;
+use App\Models\Top;
  
-class TaskController extends Controller
+class TopController extends Controller
 {
     /**
         * タスク一覧
@@ -16,9 +16,9 @@ class TaskController extends Controller
         */
     public function index(Request $request)
     {
-        $tasks = Task::orderBy('created_at', 'asc')->get();
-        return view('tasks.index', [
-            'tasks' => $tasks,
+        $tops = Top::orderBy('created_at', 'asc')->get();
+        return view('tops.index', [
+            'tops' => $tops,
         ]);
     }
 }
