@@ -20,8 +20,8 @@
         <span class="my-navbar-item">社員番号</span>
         <a class="my-navbar-item" href="/login">ログイン</a></span>
         <a class="my-navbar-item" href="/register">新規登録</a></span>
-  
-    </div>
+        
+      </div>
   </nav>
   </header>
 
