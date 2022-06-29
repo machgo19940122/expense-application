@@ -1,0 +1,68 @@
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/bootflat/2.0.4/css/bootflat.min.css');
+
+
+
+
+/* ヘッダー */
+
+.navbar {
+  margin: 2rem 0 2.5rem 0;
+}
+
+.my-navbar {
+  align-items: center;
+  background: #a0d8ef;
+  display: flex;
+  height: 6rem;
+  justify-content: space-between;
+  padding: 0 2%;
+  margin-bottom: 50px;
+}
+
+.my-navbar-brand {
+  font-size: 18px;
+}
+
+.my-navbar-brand,
+.my-navbar-item {
+  color: white;
+}
+
+.my-navbar-brand:hover,
+a.my-navbar-item:hover {
+  color: gray;
+}
+
+/* サイド */
+.side{
+  position:sticky;
+  top:100px;
+}
+
+.display_none{
+  display: none;
+}
+
+/* メイン全画面共通 */
+main{
+  display: flex;
+}
+
+/* 新規登録画面 */
+.container{
+  margin: 0auto;
+}
+
+/* login画面 */
+
+
+/* 経費編集画面 */
+
+.main_content{
+  margin:auto;
+}
+
+.btn_family{
+  display: flex;
+}
