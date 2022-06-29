@@ -33,4 +33,5 @@ class user extends Seeder
         ]);
         $user -> save();
     }
+    
 }
