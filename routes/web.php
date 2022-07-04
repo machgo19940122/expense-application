@@ -13,21 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-
-
-    
-});
-
-
- Route::get('/edit_expense',function(){
-     return view('expense/edit_expense');
- });
- Route::get('/register',function(){
-     return view('user/member_register');
- });
-
- Route::get('/login',function(){
-    return view('user/login');
-});
+Route::get('/', function () {return view('welcome');});
+Route::get('/edit_expense',function(){ return view('expense/edit_expense'); })->name('editexpense');
+Route::get('/register',function(){return view('user/member_register');});
+Route::post('/register', [App\Http\Controllers\UserController::class, 'postSignup'])->name('postsignup');
+Route::get('/login',function(){return view('user/login');})->name('login');
+Route::post('/login', [App\Http\Controllers\UserController::class, 'postSignin'])->name('signin');

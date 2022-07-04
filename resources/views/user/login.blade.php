@@ -8,18 +8,18 @@
             <div>
                 <div>Login</div>
                 <div>
-                    <form method="POST">
+                    <form method="POST" action="{{ route('signin') }}" >
                         <div>
-                            <label class="col-md-4 col-form-label text-md-end">Email Adress</label>
+                            <label class="col-md-4 col-form-label text-md-end">社員番号</label>
                             <div class="col-md-6">
-                                <input id="email" name="email" type="email" class="form-control" required autofocus>
+                                <input id="id" name="id" type="text" name="id" class="form-control" required autofocus>
                             </div>
                         </div>
 
                         <div>
                             <label for="input_color" class="col-md-4 col-form-label text-md-end">Password</label>
                             <div class="col-md-6">
-                                <input id="textPassword"  value="" type="password" class="form-control">
+                                <input id="textPassword"  value="" type="password" class="form-control" name="password">
                                 <span id="buttonEye" class="fa fa-eye"></span>
 
                             </div>
@@ -29,6 +29,7 @@
                                 <button type="submit" class="btn btn-primary col-md-3">Login
                                 </button>
                             </div>
+                            {{ csrf_field() }}
                         </div>
                     </form>
                 </div>
