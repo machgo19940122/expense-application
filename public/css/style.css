@@ -66,3 +66,20 @@ main{
 .btn_family{
   display: flex;
 }
+
+
+
+
+/* 経費登録画面のレイアウト */
+.flex{
+  display: flex;
+}
+
+/** 経費承認画面のレイアウト */
+.approve_table,td,th{
+  border: solid 1px #000000;
+  text-align: center;
+  padding: 5px;
+  margin-top: 10px;
+  margin-left: 500px;
+}
