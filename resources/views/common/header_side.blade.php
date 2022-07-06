@@ -38,6 +38,8 @@
   
     <div class="main_content">
     @yield('content')
+    @yield('apply_expense')
+    @yield('approve_expense')
     </div>
 </main>
 
