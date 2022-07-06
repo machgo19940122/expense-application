@@ -2,7 +2,7 @@
 
 @section('apply_expense')
 
-    <div class="main">
+    <div class="apply_main">
         <form action="/apply_expense_form" method="POST" class="mb-3" id="form_item">
             @csrf
             <div class="flex">
