@@ -31,3 +31,5 @@ Route::get('/', function () {
  Route::get('/login',function(){
     return view('user/login');
 });
+
+Route::get('/tops', [App\Http\Controllers\TopController::class, 'index'])->name('tops');
