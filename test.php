@@ -1,11 +1,9 @@
-
 <?php
 use Carbon\Carbon;
 
 $m = (isset($_GET['m']))? htmlspecialchars($_GET['m'], ENT_QUOTES, 'utf-8') : '';
 $y = (isset($_GET['y']))? htmlspecialchars($_GET['y'], ENT_QUOTES, 'utf-8') : '';
-$d = (isset($_GET['d']))? htmlspecialchars($_GET['d'], ENT_QUOTES, 'utf-8') : '';
-if($m!=''||$y!=''||$d!=''){
+if($m!=''||$y!=''){
     $dt = Carbon::createFromDate($y,$m,01);
 }else{
     $dt = Carbon::createFromDate();
@@ -34,10 +32,9 @@ function renderCalendar($dt)
     $todayM = $today->month;
 
     //リンク
-    
-    $title = '<h4>'.$dt->format('Y年m月').'</h4>';//月と年を表示
-    $title .= '<div class="month"><caption><a class="left" href="tops?y='.$subY.'&&m='.$subM.'"><<前月 </a>';//前月のリンク
-    $title .= '<a class="center" href="tops?y='.$todayY.'&&m='.$todayM.'">今月　</a>';
+    $title = '<h4>'.$dt->format('Y年m月d日').'</h4>';//月と年を表示
+    $title .= '<div class="month"><caption><a class="left" href="tops?y='.$todayY.'&&m='.$todayM.'">今月　</a>';
+    $title .= '<a class="left" href="tops?y='.$subY.'&&m='.$subM.'"><<前月 </a>';//前月のリンク
     $title .= '<a class="right" href="tops?y='.$addY.'&&m='.$addM.'"> 来月>></a></caption></div>';//来月リンク
     
     //曜日の配列作成
@@ -93,35 +90,13 @@ function renderCalendar($dt)
 
     return $title.$calendar;
 }
-
-try{
-    $DB_DATABASE = 'laravel';
-    $DB_USERNAME = 'root';
-    $DB_PASSWORD = '';
-    $DB_OPTION = 'charset=utf8';
-    $PDO_DSN = "mysql:host=localhost;dbname=" . $DB_DATABASE . ";" . $DB_OPTION;
-    $db = new PDO($PDO_DSN, $DB_USERNAME, $DB_PASSWORD,
-    [   PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]);
-    echo 'DB接続成功';
-    } catch(PDOException $e){
-    echo 'DB接続失敗';
-    }
-
-
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <?php echo renderCalendar($dt); ?>
-    <link rel="stylesheet" href="{{asset('/css/style.css')}}">
+<?php echo renderCalendar($dt); ?>
+<link rel="stylesheet" href="team95\public\css\style.css">
 
 </head>
-<body>
-    <div class="total-data">合計  件  円</div>
-</body>
+
 </html>

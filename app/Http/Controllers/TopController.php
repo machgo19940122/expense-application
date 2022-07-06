@@ -9,7 +9,7 @@ use App\Models\Top;
 class TopController extends Controller
 {
     /**
-        * タスク一覧
+        * 
         *
         * @param Request $request
         * @return Response
@@ -22,3 +22,4 @@ class TopController extends Controller
         ]);
     }
 }
+
