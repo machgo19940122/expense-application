@@ -53,3 +53,5 @@ Route::post('/apply_expense_form/{id}', [ExpenseController::class, 'apply_expens
 // 経費承認画面
 Route::get('/approve_expense', [ExpenseController::class, 'approve_expense']);
 
+Route::get('/tops', [App\Http\Controllers\TopController::class, 'index'])->name('tops');
+
