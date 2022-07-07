@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('classifications', function (Blueprint $table) {
-            $table->integer('id')->index()->primary();
-            $table->string('classification',300)->index()->comment('区分(ジャンル)');
+        Schema::create('tops', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
         });
     }
 
-    
     /**
      * Reverse the migrations.
      *
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classifications');
+        Schema::dropIfExists('tops');
     }
 };
