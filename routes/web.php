@@ -34,14 +34,16 @@ Route::get('/logout', [App\Http\Controllers\UserController::class,'logout'])->na
 Route::delete('/edit_expense/{expense_id}}',[App\Http\Controllers\ExpenseController::class,'delete'])->name('delete');
 
 
+
+
 // 申請一覧画面
 Route::get('/list_expense', [ExpenseController::class, 'list_expense']);
 
 // 経費登録画面
-// 経費登録画面を表示
+// 経費登録画面を表示（今回はsessionを使用するからurlの後ろに/{user_id}などは必要ない）
 Route::get('/apply_expense', [ExpenseController::class, 'apply_expense']);
 // 経費登録画面にて経費情報を入力しキャンセルまたは申請ボタンが押された時の処理
-Route::post('/apply_expense_form/{id}', [ExpenseController::class, 'apply_expense_form']);
+Route::post('/apply_expense_form', [ExpenseController::class, 'apply_expense_form']);
 
 
 // 経費承認画面
