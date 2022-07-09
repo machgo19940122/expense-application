@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call(classification::class);
         $this->call(user::class);
+        $this->call(expensesTableSeeder::class);
 
     }
 }

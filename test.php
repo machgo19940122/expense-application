@@ -100,3 +100,48 @@ function renderCalendar($dt)
 </head>
 
 </html>
+
+<?php
+ 
+ 
+use Illuminate\Http\Request;
+ 
+use App\Models\Top;
+ 
+class TopController extends Controller
+{
+    /**
+        * 
+        *
+        * @param Request $request
+        * @return Response
+        */
+    public function index(Request $request)
+    {
+        
+        $request->session()->put('id', 1);
+        $request->session()->put('role', 1);
+        //セッションを取得（id、権限）
+        //$user_id = セッションから取得
+        $user_id = $request->session()->get('id');
+        $user = User::find($user_id);
+        //権限チェック
+        if($user->role == 1){
+            //管理者の場合、全データ取得
+            $tops = Top::orderBy('created_at', 'asc')->get();
+
+            //sqlで件数と金額の集計を行う。件数はselect( sum(*) )　みたいな感じ、金額はSUM(expense)
+
+        }else{
+            //一般の場合、ログイン者のデータのみ取得
+            $tops = Top::Where("id","=",$user_id )->orderBy('created_at', 'asc')->get();
+
+            //sqlで件数と金額の集計を行う。件数はselect( sum(*) )　みたいな感じ、金額はSUM(expense)
+            
+        }
+        $tops = Top::orderBy('created_at', 'asc')->get();
+        return view('tops.index', [
+            'tops' => $tops,
+        ]);
+    }
+}
