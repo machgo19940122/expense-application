@@ -1,4 +1,5 @@
-
+@php
+@endphp
 <?php
 use Carbon\Carbon;
 
@@ -69,6 +70,7 @@ function renderCalendar($dt)
        $comp_now = Carbon::today(); //今日
 
        //ループの日と今日を比較
+       //if(データがない){
         if ($comp->eq($comp_now)) {
            //同じなので緑色の背景にする
             $calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'</td>';
@@ -85,6 +87,25 @@ function renderCalendar($dt)
                     break;
             }
         }
+    // }else{
+    //     if ($comp->eq($comp_now)) {
+    //         //同じなので緑色の背景にする
+    //         $calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'<br><a href="#">test</a></td>';
+    //      }else{
+    //          switch ($dt->format('N')) {
+    //              case 6:
+    //                  $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day.'<br><a href="#">test</a></td>';
+    //                  break;
+    //              case 7:
+    //                  $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day.'<br><a href="#">test</a></td>';
+    //                  break;
+    //              default:
+    //                  $calendar .= '<td class="day" >'.$dt->day.'<br><a href="#">test</a></td>';
+    //                  break;
+    //          }
+    //      }
+    //}
+
         $dt->addDay();
     }
 
