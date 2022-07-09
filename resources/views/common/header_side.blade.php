@@ -32,10 +32,10 @@
   <main>  
     <div class="side" id="side_bar">  
         <ul class="nav nav-stacked">
-        <li><a href="/">TOP</a></li>
-          <li ><a href="#">経費登録</a></li>
-          <li><a href="#">申請一覧</a></li>
-          <li><a href="#">経費承認</a></li>
+        <li><a href="/tops">TOP</a></li>
+          <li ><a href="/apply_expense">経費登録</a></li>
+          <li><a href="/list_expense">申請一覧</a></li>
+          <li><a href="/approve_expense">経費承認</a></li>
           <li><form  action="{{ route('logout') }}"method="GET">
             <a href="/logout" id="logout">ログアウト</a></form></li>
         </ul>

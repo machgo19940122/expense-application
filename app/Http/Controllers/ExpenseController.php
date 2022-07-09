@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\expense;
 use App\Models\Expense;
 use App\Models\Classification;
 use App\Models\User;
