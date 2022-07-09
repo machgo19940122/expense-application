@@ -15,12 +15,16 @@
   <nav class="my-navbar">
     <a class="my-navbar-brand" href="/">経費管理app(仮）</a>
     <div class="my-navbar-control">
-        <!-- //TODO:if文でsession情報を取得し、名前、社員番号を表示。 else ログインと会員登録ボタンを表示-->
-        <span class="my-navbar-item">名前</span>
-        <span class="my-navbar-item">社員番号</span>
-        <a class="my-navbar-item" href="/login">ログイン</a></span>
-        <a class="my-navbar-item" href="/register">新規登録</a></span>
-  
+       
+        @if(!Session::has('id'))
+        <a class="my-navbar-item" href="{{ route('login') }}">ログイン</a>
+        <a class="my-navbar-item" href="{{ route('register') }}">会員登録</a>
+        
+       @else
+        <span class="my-navbar-item">こんにちは---さん!</span>
+       
+        
+       @endif
     </div>
   </nav>
   </header>
@@ -32,12 +36,15 @@
           <li ><a href="#">経費登録</a></li>
           <li><a href="#">申請一覧</a></li>
           <li><a href="#">経費承認</a></li>
-          <li><a href="/login">ログアウト</a></li>
+          <li><form  action="{{ route('logout') }}"method="GET">
+            <a href="/logout" id="logout">ログアウト</a></form></li>
         </ul>
   </div>
   
     <div class="main_content">
     @yield('content')
+    @yield('apply_expense')
+    @yield('approve_expense')
     </div>
 </main>
 
