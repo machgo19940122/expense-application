@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -48,7 +47,9 @@ class UserController extends Controller
         //１件もなければエラー
         if (count($user) === 0){
             $login_error=false;
-            return view('user/login', ['login_error' => $login_error]);
+            return view('user/login', [
+                'login_error' => $login_error,
+            ]);
         }
         // 一致したら
         if (Hash::check($request->password, $user[0]->password)) {  

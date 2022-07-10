@@ -2,12 +2,18 @@
 
 @section('content')
 
+
 <div class="container">
     <div class="row">
         <div class="col-md-8">
             <div>
                 <div>Login</div>
-          
+
+                    @if(isset($login_error))
+                    <div class="alert alert-warning text-sm" role="alert">
+                            ログインに失敗しました。メールアドレス、パスワードが正しいかご確認ください。
+                    </div>
+                    @endif
                     
                 <div>
                     <form method="POST" action="{{ route('signin') }}" >

@@ -21,7 +21,7 @@
         <a class="my-navbar-item" href="{{ route('register') }}">会員登録</a>
         
        @else
-        <span class="my-navbar-item">こんにちは---さん!</span>
+        <span class="my-navbar-item">こんにちは{{session('name')}}さん!</span>
        
         
        @endif
