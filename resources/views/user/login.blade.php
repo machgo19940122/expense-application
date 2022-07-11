@@ -1,7 +1,14 @@
 @extends('common/header_side')
 
 @section('content')
-
+        <!-- フラッシュメッセージ -->
+        <script>
+            @if (session('flash_message'))
+                $(function () {
+                        toastr.success('{{ session('flash_message') }}');
+                });
+            @endif
+        </script>
 
 <div class="container">
     <div class="row">
@@ -11,10 +18,10 @@
 
                     @if(isset($login_error))
                     <div class="alert alert-warning text-sm" role="alert">
-                            ログインに失敗しました。メールアドレス、パスワードが正しいかご確認ください。
+                            ログインに失敗しました。社員番号、パスワードが正しいかご確認ください。
                     </div>
                     @endif
-                    
+
                 <div>
                     <form method="POST" action="{{ route('signin') }}" >
                         <div>
