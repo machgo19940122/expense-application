@@ -59,18 +59,22 @@ class ExpenseController extends Controller
 
     // 経費承認画面を表示
     public function approve_expense(){
-        // if()
         // Expenseテーブルからstutasが『未承認』のものを取得する
-        $approve = Expense::where('status', '=', config('const.expense_status.misyonin'))->get();
+        $approve = Expense::where('status', '=', config('const.expense_status.misyonin'))
+            -> orderBy('target_date', 'asc')->get();
 
-        // classification_idから項目の取得
-        // $approve -> classification_id = Classification::get('classification');
-
-
-        return view('expense/approve_expense')->with([
+        return view('expense.approve_expense')->with([
             'approve' => $approve,
         ]);
     }
+
+    // 経費承認画面にて管理者が承認ボタンを押した時の処理
+    public function approval(Request $request){
+
+    }
+
+
+
 
     //編集画面の表示 
     public function getedit (int $id){
@@ -112,3 +116,5 @@ class ExpenseController extends Controller
             return redirect()->route('tops');
     }
 }
+
+

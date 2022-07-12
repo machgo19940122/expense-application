@@ -9,5 +9,6 @@ return [
                         ], 
     'expense_status2' => ['syonin' => '2',
                          ],
+    'create_approve_table' => ['border' => '1'],
 
 ];

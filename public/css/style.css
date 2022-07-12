@@ -79,13 +79,41 @@ main{
 }
 
 /** 経費承認画面のレイアウト */
-.approve_table,td,th{
-  border: solid 1px #000000;
-  text-align: center;
-  padding: 5px;
-  margin-top: 10px;
-  margin-left: 500px;
+table th ,td {
+  border:1px solid;
+  height: 40px;
+  padding: 10px
 }
+
+th{
+  text-align: center;
+}
+
+/* 経費承認画面においてExpenseテーブルに未承認のレコードが無い場合のデザイン */
+.approve_null{
+  border: solid 3px black;
+  padding: 100px;
+}
+
+
+/*　スクロールバーの実装 */
+.approve_table {
+  display: block;
+  height: auto;
+  max-height: 500px;
+  overflow-y: scroll;
+  border: 1px solid #000000;
+  border-collapse: collapse;
+}
+
+.approve_table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #99FFFF;
+}
+
+
 
 /* index.blade.php */
 
