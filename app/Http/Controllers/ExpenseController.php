@@ -10,6 +10,17 @@ use DB;
 
 class ExpenseController extends Controller
 {
+    // 申請一覧画面
+
+    // 申請一覧画面の表示
+    public function list_expense(){
+        // Expenseテーブルのレコードを全て取得する
+        $list = Expense::all();
+
+        return view('expense.list_expense')->with([
+            'list' => $list,
+        ]);
+    }
 
     // 経費登録画面
 
@@ -26,7 +37,7 @@ class ExpenseController extends Controller
     public function apply_expense_form(Request $request){
         if($request -> has('cancel')){
              // キャンセルボタンを押した場合 -> 入力内容を無視してtop画面に遷移
-            redirect('tops/index');
+            redirect('tops.index');
         }elseif($request -> has('application')){
             // 申請ボタンを押した場合 -> 入力者の名前と紐づき、申請一覧画面にデータを送りトップ画面に遷移
             $user = User :: where('id', '=', session()->get("id"))->first();
@@ -51,7 +62,7 @@ class ExpenseController extends Controller
 
             $expense->save();
 
-            redirect('tops/index');  
+            redirect('tops.index');  
         }
     }
 
@@ -70,7 +81,20 @@ class ExpenseController extends Controller
 
     // 経費承認画面にて管理者が承認ボタンを押した時の処理
     public function approval(Request $request){
+        $approval = Expense::where('id', '=', $request->id)->first();
+        // statusを0（未承認）から2（承認）に変更する
+        $approval->status = config('const.expense_status2.syonin');
+        $approval->save();
+        return redirect('/approve_expense'); 
+    }
 
+    // 経費承認画面にて管理者が差戻しボタンを押した時の処理
+    public function remand(Request $request){
+        $approval = Expense::where('id', '=', $request->id)->first();
+        // statusを0（未承認）から1（差戻し）に変更する
+        $approval->status = config('const.expense_status3.remand');
+        $approval->save();
+        return redirect('/approve_expense'); 
     }
 
 

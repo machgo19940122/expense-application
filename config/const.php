@@ -9,6 +9,9 @@ return [
                         ], 
     'expense_status2' => ['syonin' => '2',
                          ],
-    'create_approve_table' => ['border' => '1'],
+    'create_approve_table' => ['border' => '1'
+                         ],
+    'expense_status3' => ['remand' => '1'
+                        ],
 
 ];

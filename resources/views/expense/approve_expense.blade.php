@@ -27,8 +27,8 @@
                         <td>{{$value->expense}}円</td>
                         <td>{{$value->expelnation}}</td>
                         <td>{{$value->remarks}}</td>
-                        <td><a href="{{url('approval')}}" class="approval_button"><button type="button">承認</button></a></td>
-                        <td><a href="{{url('remand')}}" class="approval_button"><button type="button">差戻し</button></a></td>
+                        <td><a href="/approval/{{$value->id}}" class="approval_button"><button type="button">承認</button></a></td>
+                        <td><a href="/remand/{{$value->id}}" class="approval_button"><button type="button">差戻し</button></a></td>
                     </tr>
                 @endforeach
             </tbody>

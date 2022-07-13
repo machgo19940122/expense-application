@@ -68,6 +68,7 @@ main{
 }
 
 /* 経費登録画面のレイアウト */
+
 .apply_main{
   width: 500px;
   margin-top: 50px;
@@ -79,6 +80,7 @@ main{
 }
 
 /** 経費承認画面のレイアウト */
+
 table th ,td {
   border:1px solid;
   height: 40px;
@@ -94,7 +96,6 @@ th{
   border: solid 3px black;
   padding: 100px;
 }
-
 
 /*　スクロールバーの実装 */
 .approve_table {

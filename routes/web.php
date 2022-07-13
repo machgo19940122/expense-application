@@ -51,7 +51,9 @@ Route::post('/apply_expense_form', [ExpenseController::class, 'apply_expense_for
 // 経費承認画面を表示
 Route::get('/approve_expense', [ExpenseController::class, 'approve_expense']);
 // 承認ボタンを押した時の処理
-Route::post('/approval', [ExpenseController::class, 'approval']);
+Route::get('/approval/{id}', [ExpenseController::class, 'approval']);
+// 差戻しボタンを押した時の処理
+Route::get('/remand/{id}', [ExpenseController::class, 'remand']);
 
 
 Route::get('/tops', [App\Http\Controllers\TopController::class, 'index'])->name('tops');
