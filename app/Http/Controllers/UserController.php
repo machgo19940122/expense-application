@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -12,9 +11,6 @@ use Session;
 
 class UserController extends Controller
 {
-
-
-
 //会員登録
     public function postSignup(Request $request){  
         // バリデーション
@@ -44,7 +40,7 @@ class UserController extends Controller
             $login_error=null;
         //idが同じレコードをuser tableからgetする
             $user = User::where('id', $request->id)->get();
-    
+
         //１件もなければエラー
         if (count($user) === 0){
             $login_error=false;
@@ -56,7 +52,7 @@ class UserController extends Controller
             Session::put("id",$user[0]->id);
             Session::put("name",$user[0]->name);
             Session::put("role",$user[0]->role);
-            //トップ画面に遷移（一時的に経費申請画面に遷移）
+            //トップ画面に遷移
             return redirect()->route('tops');
         // 不一致だったらエラー   
         }else{
@@ -69,6 +65,7 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         $request->session()->flush();
+        Session::flash('flash_message', 'ログアウトしました');
         return redirect()->route('login');
     }  
         }
