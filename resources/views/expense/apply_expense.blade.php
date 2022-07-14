@@ -3,15 +3,15 @@
 @section('apply_expense')
 
     <div class="apply_main">
-        <form action="/apply_expense_form" method="POST" class="mb-3" id="form_item">
+        <form action="{{url('apply_expense_form')}}" method="POST" class="mb-3" id="form_item">
             @csrf
             <div class="flex">
                 <label for="Input1" class="form-label">年月日</label>
                 <input type="date" class="form-control" id="Input1" name="target_date" required>
                 <label for="Input" class="form-label">項目</label>
-                <select>
+                <select name='classification'>
                 @foreach($classification as $value)
-                    <option value="{{ $value['id'] }}" name='classification'>{{$value['classification']}}</option>
+                    <option value="{{ $value['id'] }}" >{{$value['classification']}}</option>
                 @endforeach
                 </select>
 

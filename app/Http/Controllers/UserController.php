@@ -35,15 +35,18 @@ class UserController extends Controller
 
 //ログイン機能
         public function postSignin(Request $request)
-        { //ログインエラー変数定義
+        { 
+            //ログインエラー変数定義
             $login_error=null;
         //idが同じレコードをuser tableからgetする
             $user = User::where('id', $request->id)->get();
+
         //１件もなければエラー
         if (count($user) === 0){
             $login_error=false;
             return view('user/login', ['login_error' => $login_error]);
         }
+
         // 一致したら
         if (Hash::check($request->password, $user[0]->password)) {  
             Session::put("id",$user[0]->id);
