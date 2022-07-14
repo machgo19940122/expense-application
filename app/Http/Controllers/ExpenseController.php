@@ -15,12 +15,15 @@ class ExpenseController extends Controller
     // 申請一覧画面の表示
     public function list_expense(){
         // Expenseテーブルのレコードを全て取得する
-        $list = Expense::all();
+        $list = Expense::orderBy('target_date', 'asc')->get();
+
 
         return view('expense.list_expense')->with([
             'list' => $list,
         ]);
     }
+
+
 
     // 経費登録画面
 

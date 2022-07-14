@@ -24,7 +24,7 @@
                         <td>{{$value->target_date}}</td>
                         <!-- 1つ目のclassificationでExpenseテーブルのidを取得、2つ目のclassificationでidと紐付くClassificationテーブルのclassificationを取得する -->
                         <td>{{$value->classification->classification}}</td>
-                        <td>{{$value->expense}}円</td>
+                        <td>{{ number_format($value->expense) }}円</td>
                         <td>{{$value->expelnation}}</td>
                         <td>{{$value->remarks}}</td>
                         <td><a href="/approval/{{$value->id}}" class="approval_button"><button type="button">承認</button></a></td>

@@ -101,7 +101,7 @@ th{
 .approve_table {
   display: block;
   height: auto;
-  max-height: 500px;
+  max-height: 350px;
   overflow-y: scroll;
   border: 1px solid #000000;
   border-collapse: collapse;
