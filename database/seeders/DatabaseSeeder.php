@@ -22,6 +22,11 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call(classification::class);
         $this->call(user::class);
-        $this->call(expense::class);
+// <<<<<<< HEAD
+//         $this->call(expensesTableSeeder::class);
+
+// =======
+//         $this->call(expense::class);
+// >>>>>>> fd87c975fc6f85e28e3db79af331afe77ef45ac5
     }
 }
