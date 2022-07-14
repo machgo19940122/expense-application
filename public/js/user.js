@@ -2,6 +2,7 @@ const side = document.getElementById('side_bar');
 side.classList.add('display_none');
 
 
+
 var txtPass = document.getElementById("textPassword");
 var btnEye = document.getElementById("buttonEye");
 

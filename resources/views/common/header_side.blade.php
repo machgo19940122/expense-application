@@ -35,7 +35,7 @@
                 <li ><a href="/apply_expense">経費登録</a></li>
                 <li><a href="/list_expense">申請一覧</a></li>
                 @if(session('role')===1)
-                <li><a href="/approve_expense">経費承認 <span class="badge bg-secondary">件数</span></a></button></li>
+                <li><a href="/approve_expense">経費承認 <span class="badge rounded-pill bg-primary">{{$count_approval}}件</span></a></button></li>
                 @endif
                 <li>
                     <a href="/logout"><form  action="{{ route('logout') }}"method="GET">ログアウト</form></a>
