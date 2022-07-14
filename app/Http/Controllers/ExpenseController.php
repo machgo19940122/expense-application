@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\expense;
+use App\Models\Expense;
 use App\Models\Classification;
 use App\Models\User;
 use DB;
+use Session;
 
 class ExpenseController extends Controller
 {
@@ -72,10 +73,16 @@ class ExpenseController extends Controller
     public function getedit (int $id){
       $classifications = Classification::all();
       $expense = expense::find($id);
+      $status = [
+                "0"=>"未承認",
+                "1"=>"差し戻し",
+                "2"=>"承認済み", 
+      ];
 
       return view('expense/edit_expense', [
         'classifications' => $classifications,
         'expense'=>$expense,
+        'status'=>$status,
       ]);
 
       $expense = expense::find($expense_id);
@@ -86,6 +93,11 @@ class ExpenseController extends Controller
     {
         // urlから受け取ったidをパラメーターとしてDBから一件取得
         $expense = expense::find($expense_id);
+
+        if($expense->status === 2){
+            Session::flash('flash_message2', '承認済みの申請は編集できません');
+            return redirect()->route('edit',$expense_id);
+        }
         // postされたものを入れる
         $expense->target_date = $request->target_date;
         $expense->expense = $request->expense;

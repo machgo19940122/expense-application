@@ -2,6 +2,14 @@
 
 @section('content')
 
+ <!-- フラッシュメッセージ 承認済みの申請は編集できません-->
+ <script>
+            @if (session('flash_message2'))
+                $(function () {
+                        toastr.warning('{{ session('flash_message2') }}');
+                });
+            @endif
+</script>
 
 <div class="container">
     <div>
@@ -22,11 +30,23 @@
 
               <div class="form-group">
                 <label for="title" >項目</label>
-                <select name="classification_id" id="category" class="form-control" selected="{{$expense->classification_id}}">
+                <select name="classification_id" id="category" class="form-control">
                   @foreach($classifications as $classification)
-                  <option value="{{$classification->id}}">{{$classification->classification}}</option>
+                  <option value="{{$classification->id}}" 
+                  <?php if($classification->id === (int)$expense->classification_id): ?>selected<?php endif ?>>
+                    {{$classification->id." : ".$classification->classification}}</option>
                   @endforeach
-                 
+                </select>
+              </div>
+
+
+              <div class="form-group">
+                <label for="title" >ステータス</label>
+                <select name="status" id="status" class="form-control" disabled>
+                  @foreach($status as $key => $val)
+                  <option value="{{$key}}" 
+                  <?php if($key === (int)$expense->status): ?>selected<?php endif ?>>{{$val}}</option>
+                  @endforeach
                 </select>
               </div>
 
