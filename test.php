@@ -1,4 +1,4 @@
-<?php
+@php
 use Carbon\Carbon;
 
 $m = (isset($_GET['m']))? htmlspecialchars($_GET['m'], ENT_QUOTES, 'utf-8') : '';
@@ -146,16 +146,8 @@ class TopController extends Controller
     }
 }
 
-<?php
  
-namespace App\Http\Controllers;
  
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-
-use App\Models\Top;
-use App\Models\User;
 
  
 class TopController extends Controller
@@ -336,3 +328,18 @@ class TopController extends Controller
     
     }
 }
+for ($ii = 1; $ii <= $daysInMonth; $ii++){
+    $dayAmount = DB::table('expenses')
+    ->select('target_date')
+    ->selectRaw('SUM(expense) as sum_expense')
+    ->groupBy('target_date')
+    ->whereDay('target_date', $dt->format('d'))
+    ->get();
+}
+
+$dayAmount = DB::table('expenses')
+->selectRaw('DATE_FORMAT(target_date, "%Y%m%d") AS date')
+->selectRaw('SUM(expense) as sum_expense')
+->groupBy('date')
+->get();
+

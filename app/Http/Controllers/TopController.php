@@ -23,6 +23,7 @@ class TopController extends Controller
         $request->session()->put('id', 1);
         $request->session()->put('role', 1);
 
+        
         $m = (isset($_GET['m']))? htmlspecialchars($_GET['m'], ENT_QUOTES, 'utf-8') : '';
         $y = (isset($_GET['y']))? htmlspecialchars($_GET['y'], ENT_QUOTES, 'utf-8') : '';
         $d = (isset($_GET['d']))? htmlspecialchars($_GET['d'], ENT_QUOTES, 'utf-8') : '';
@@ -33,7 +34,8 @@ class TopController extends Controller
             $dt = Carbon::createFromDate();
         }
 
-
+        //今月は何日まであるか
+        $daysInMonth = $dt->daysInMonth;
         
         //セッションを取得（id、権限）
         //$user_id = セッションから取得
@@ -54,15 +56,21 @@ class TopController extends Controller
             if(empty($monthAmount[0]->sum_expense)){
                 $monthAmount[0]->sum_expense = 0;
             }
-
-
-
             //件数を取得
 
             $monthTotal = DB::table('expenses')
             ->selectRaw('COUNT(expense) as sum_expense')
             ->whereMonth('target_date', $dt->format('m'))
             ->get();
+
+            $dayAmount = DB::table('expenses')
+            ->select('target_date')
+            ->selectRaw('SUM(expense) as sum_expense')
+            ->groupBy('target_date')
+            ->whereDay('target_date', $dt->format('d'))
+            ->get();        
+
+
 
         }else{
             //一般の場合、ログイン者のデータのみ取得
@@ -77,7 +85,8 @@ class TopController extends Controller
             // $totalCounts = $this->posts->getCountExpense();
             
 
-        }
+        }    
+
         $dt->startOfMonth(); //今月の最初の日
         $dt->timezone = 'Asia/Tokyo'; //日本時刻で表示
     
@@ -102,7 +111,7 @@ class TopController extends Controller
         
         $title = '<h4>'.$dt->format('Y年m月').'</h4>';//月と年を表示
         $title .= '<div class="month"><caption><a class="left" href="tops?y='.$subY.'&&m='.$subM.'"><<前月 </a>';//前月のリンク
-        $title .= '<a class="center" href="tops?y='.$todayY.'&&m='.$todayM.'">今月　</a>';
+        $title .= '<a class="center" href="tops?y='.$todayY.'&&m='.$todayM.'">今月  </a>';
         $title .= '<a class="right" href="tops?y='.$addY.'&&m='.$addM.'"> 来月>></a></caption></div>';//来月リンク
         
         //曜日の配列作成
@@ -115,15 +124,15 @@ class TopController extends Controller
         }
         $calendar .= '</thead>';
         $calendar .= '<tbody><tr>';
-    
-    
+
         //今月は何日まであるか
         $daysInMonth = $dt->daysInMonth;
+
         
         for ($i = 1; $i <= $daysInMonth; $i++) {
             if($i==1){
                 if ($dt->format('N')!= 7) {
-                    $calendar .= '<td colspan="'.($dt->format('N')).'"></td>'; //1日が日曜じゃない場合はcolspanでその分あける
+                    $calendar .= '<td colspan="'.($dt->format('N')).'"></td>'; //1日が日曜じゃない場合はcolspanでその分あける        
                 }
             }
     
@@ -154,17 +163,17 @@ class TopController extends Controller
         // }else{
         //     if ($comp->eq($comp_now)) {
         //         //同じなので緑色の背景にする
-        //         $calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'<br><a href="#">test</a></td>';
+        //         $calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'<br><a href="/list_expense"><span>件<br>円</span></a></td>';
         //      }else{
         //          switch ($dt->format('N')) {
         //              case 6:
-        //                  $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day.'<br><a href="#">test</a></td>';
+        //                  $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day.'<br><a href="/list_expense"><span>件<br>円</span></a></td>';
         //                  break;
         //              case 7:
-        //                  $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day.'<br><a href="#">test</a></td>';
+        //                  $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day.'<br><a href="/list_expense"><span>件<br>円</span></a></td>';
         //                  break;
         //              default:
-        //                  $calendar .= '<td class="day" >'.$dt->day.'<br><a href="#">test</a></td>';
+        //                  $calendar .= '<td class="day" >'.$dt->day.'<br><a href="/list_expense"><span>件<br>円</span></a></td>';
         //                  break;
         //          }
         //      }
@@ -172,6 +181,7 @@ class TopController extends Controller
     
             $dt->addDay();
         }
+
     
         $calendar .= '</tr></tbody>';
         $calendar .= '</table>';
@@ -183,6 +193,7 @@ class TopController extends Controller
             'calendar' => $title.$calendar,
             'monthAmount' => $monthAmount,
             'monthTotal' => $monthTotal,
+            'dayAmount' => $dayAmount,
         ]);
 
     
