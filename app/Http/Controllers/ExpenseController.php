@@ -11,16 +11,29 @@ use Session;
 
 class ExpenseController extends Controller
 {
+    // 申請一覧画面
+
+    // 申請一覧画面の表示
+    public function list_expense(){
+        // Expenseテーブルのレコードを全て取得する
+        $list = Expense::orderBy('target_date', 'asc')->get();
+
+
+        return view('expense.list_expense')->with([
+            'list' => $list,
+        ]);
+    }
+
+
 
     // 経費登録画面
 
     // 経費登録画面を表示
     public function apply_expense(){
-
         // 申請登録画面の項目のドロップダウンにclassificationテーブルからデータを取得し表示する
         $classification = Classification::all();
         return view('expense/apply_expense')->with([
-            'classification' => $classification
+            'classification' => $classification,
         ]);
     }
 
@@ -28,28 +41,32 @@ class ExpenseController extends Controller
     public function apply_expense_form(Request $request){
         if($request -> has('cancel')){
              // キャンセルボタンを押した場合 -> 入力内容を無視してtop画面に遷移
-            redirect('index');
+            redirect('tops.index');
         }elseif($request -> has('application')){
             // 申請ボタンを押した場合 -> 入力者の名前と紐づき、申請一覧画面にデータを送りトップ画面に遷移
-            $user = User :: where('id', '=', $request->id)->first();
+            $user = User :: where('id', '=', session()->get("id"))->first();
 
             // 申請された経費をレコードに追加
             $expense = new Expense();
+            $expense->user_id = $user -> id;
             $expense->name = $user->name;
             $expense->target_date = $request->target_date;
             $expense->expense = $request->expense;
-            $expense->classification = $request->classification;
+            $expense->classification_id = $request->classification;
             $expense->expelnation = $request->expelnation;
             $expense->remarks = $request->remarks;
-            $expense->save();
 
-            // 申請された金額が1万円以上なら『未承認』のstatusを付与する
-            if($request->expense >= 10000){
-                $expense->status = '0';
-                //$expense->status = config('const.expense_status.misyonin');
+            if($request->expense >= config('const.expense_border.border')){
+                // 申請された金額が1万円以上なら『未承認』のstatusを付与する
+                $expense->status = config('const.expense_status.misyonin');
+            }else{
+                // 申請された金額が9999円以下なら『承認』のstatusを付与する
+                $expense->status = config('const.expense_status2.syonin');
             }
 
-            redirect('index');  
+            $expense->save();
+
+            redirect('tops.index');  
         }
     }
 
@@ -58,16 +75,34 @@ class ExpenseController extends Controller
     // 経費承認画面を表示
     public function approve_expense(){
         // Expenseテーブルからstutasが『未承認』のものを取得する
-        $approve = Expense::where('status', '=', '0')->get();
+        $approve = Expense::where('status', '=', config('const.expense_status.misyonin'))
+            -> orderBy('target_date', 'asc')->get();
 
-        // classification_idから項目の取得
-        // $approve -> classification_id = Classification::get('classification');
-
-
-        return view('expense/approve_expense')->with([
+        return view('expense.approve_expense')->with([
             'approve' => $approve,
         ]);
     }
+
+    // 経費承認画面にて管理者が承認ボタンを押した時の処理
+    public function approval(Request $request){
+        $approval = Expense::where('id', '=', $request->id)->first();
+        // statusを0（未承認）から2（承認）に変更する
+        $approval->status = config('const.expense_status2.syonin');
+        $approval->save();
+        return redirect('/approve_expense'); 
+    }
+
+    // 経費承認画面にて管理者が差戻しボタンを押した時の処理
+    public function remand(Request $request){
+        $approval = Expense::where('id', '=', $request->id)->first();
+        // statusを0（未承認）から1（差戻し）に変更する
+        $approval->status = config('const.expense_status3.remand');
+        $approval->save();
+        return redirect('/approve_expense'); 
+    }
+
+
+
 
     //編集画面の表示 
     public function getedit (int $id){
@@ -87,6 +122,10 @@ class ExpenseController extends Controller
 
       $expense = expense::find($expense_id);
     }
+
+
+
+
 
     //申請内容編集
     public function edit(int $expense_id, request $request)
@@ -116,3 +155,5 @@ class ExpenseController extends Controller
             return redirect()->route('tops');
     }
 }
+
+
