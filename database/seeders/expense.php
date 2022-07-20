@@ -45,11 +45,53 @@ class expense extends Seeder
          // 3レコード
          $expense = new \App\Models\expense([
             'id' => '3',
-            'user_id' => '3',
+            'user_id' => '2',
             'target_date' => '2022/07/04',
             'status' => '2',
             'name' => 'テック花子',
-            'expense' => '2500',
+            'expense' => '3000',
+            'classification_id' => '5',
+            'expelnation' => 'シャトレーゼに支払い',
+            'remarks' => '取引先訪問時のお土産として使用',
+        ]);
+        $expense->save();
+
+        // 4レコード
+        $expense = new \App\Models\expense([
+            'id' => '4',
+            'user_id' => '1',
+            'target_date' => '2022/08/04',
+            'status' => '2',
+            'name' => 'テック花子',
+            'expense' => '3500',
+            'classification_id' => '5',
+            'expelnation' => 'シャトレーゼに支払い',
+            'remarks' => '取引先訪問時のお土産として使用',
+        ]);
+        $expense->save();
+
+        // 5レコード
+         $expense = new \App\Models\expense([
+            'id' => '5',
+            'user_id' => '2',
+            'target_date' => '2022/08/04',
+            'status' => '2',
+            'name' => 'テック花子',
+            'expense' => '4000',
+            'classification_id' => '5',
+            'expelnation' => 'シャトレーゼに支払い',
+            'remarks' => '取引先訪問時のお土産として使用',
+        ]);
+        $expense->save();
+
+        // 6レコード
+        $expense = new \App\Models\expense([
+            'id' => '6',
+            'user_id' => '2',
+            'target_date' => '2022/06/04',
+            'status' => '2',
+            'name' => 'テック花子',
+            'expense' => '5000',
             'classification_id' => '5',
             'expelnation' => 'シャトレーゼに支払い',
             'remarks' => '取引先訪問時のお土産として使用',
