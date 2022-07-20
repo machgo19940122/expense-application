@@ -27,14 +27,14 @@
                         <div>
                             <label class="col-md-4 col-form-label text-md-end">社員番号</label>
                             <div class="col-md-6">
-                                <input id="id" name="id" type="text" name="id" class="form-control" required autofocus>
+                                <input id="id" name="id" type="text" name="id" class="form-control" maxlength="10" required autofocus>
                             </div>
                         </div>
 
                         <div>
                             <label for="input_color" class="col-md-4 col-form-label text-md-end">Password</label>
                             <div class="col-md-6">
-                                <input id="textPassword"  value="" type="password" class="form-control" name="password">
+                                <input id="textPassword"  value="" type="password" class="form-control" name="password" maxlength="128" required >
                                 <span id="buttonEye" class="fa fa-eye"></span>
 
                             </div>

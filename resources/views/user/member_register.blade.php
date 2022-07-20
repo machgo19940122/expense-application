@@ -16,7 +16,7 @@
                          <div>
                             <label for="text" class="col-md-4">名前</label>
                             <div class="col-md-6">
-                                <input id="name" type="text" name="name" class="form-control">
+                                <input id="name" type="text" name="name" class="form-control" maxlength="100">
                             </div>
                         </div>
                       
@@ -34,7 +34,7 @@
                             <label for="password" class="col-md-4">Password</label>
 
                             <div class="col-md-6">
-                                <input id="textPassword" type="password" class="form-control" name="password">
+                                <input id="textPassword" type="password" class="form-control" name="password" maxlength="128">
                                 <span id="buttonEye" class="fa fa-eye"></span>
                             </div>
                         </div>
