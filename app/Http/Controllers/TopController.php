@@ -20,9 +20,6 @@ class TopController extends Controller
         */
     public function index(Request $request)
     {
-        $request->session()->put('id', 1);
-        $request->session()->put('role', 1);
-
         
         $m = (isset($_GET['m']))? htmlspecialchars($_GET['m'], ENT_QUOTES, 'utf-8') : '';
         $y = (isset($_GET['y']))? htmlspecialchars($_GET['y'], ENT_QUOTES, 'utf-8') : '';
@@ -41,48 +38,112 @@ class TopController extends Controller
         //$user_id = セッションから取得
         $user_id = $request->session()->get('id');
         $user = User::find($user_id);
+
         //権限チェック
-        if($user->role == 1){
+        if($user->role == 1 ){
             //管理者の場合、全データ取得
             $tops = Top::orderBy('created_at', 'asc')->get();
-
-            //金額を月ごとに取得
+            
+            //月の金額を取得
             
             $monthAmount = DB::table('expenses')
             ->selectRaw('SUM(expense) as sum_expense')
+            ->whereYear('target_date', $dt->format('Y'))
             ->whereMonth('target_date', $dt->format('m'))
+            ->where('status', 2)
             ->get();
 
             if(empty($monthAmount[0]->sum_expense)){
                 $monthAmount[0]->sum_expense = 0;
             }
-            //件数を取得
+            //月の件数を取得
 
             $monthTotal = DB::table('expenses')
             ->selectRaw('COUNT(expense) as sum_expense')
+            ->whereYear('target_date', $dt->format('Y'))
             ->whereMonth('target_date', $dt->format('m'))
+            ->where('status', 2)
             ->get();
 
-            $dayAmount = DB::table('expenses')
-            ->select('target_date')
-            ->selectRaw('SUM(expense) as sum_expense')
-            ->groupBy('target_date')
-            ->whereDay('target_date', $dt->format('d'))
-            ->get();        
+            //日別の合計金額を取得
+            for($i=1; $i <= $daysInMonth; $i++){
+                $dayAmounts[$i] = DB::table('expenses')
+                ->select('target_date')
+                ->selectRaw('SUM(expense) as sum_expense')
+                ->groupBy('target_date')
+                ->whereYear('target_date', $dt->format('Y'))
+                ->whereMonth('target_date', $dt->format('m'))
+                ->whereDay('target_date', $i)
+                ->where('status', 2)
+                ->first();
+                if($dayAmounts[$i] == null){
+                    $sc = new \stdClass();
+                    $sc->sum_expense = 0;
+                    $sc->target_date = $dt->format('Y-m-').$i;
+                    $dayAmounts[$i] = $sc;
+                }
+            }
 
+            //日別の件数を取得
+            for($i=1; $i <= $daysInMonth; $i++){
+                $dayTotals[$i] = DB::table('expenses')
+                ->select('target_date')
+                ->selectRaw('COUNT(expense) as sum_expense')
+                ->groupBy('target_date')
+                ->whereYear('target_date', $dt->format('Y'))
+                ->whereMonth('target_date', $dt->format('m'))
+                ->whereDay('target_date', $i)
+                ->where('status', 2)
+                ->first();
+                if($dayTotals[$i] == null){
+                    $sc = new \stdClass();
+                    $sc->sum_expense = 0;
+                    $sc->target_date = $dt->format('Y-m-').$i;
+                    $dayTotals[$i] = $sc;
+                }
+            }
+            
 
 
         }else{
+            if($user->role == 0 )
             //一般の場合、ログイン者のデータのみ取得
             $tops = Top::Where("id","=",$user_id )->orderBy('created_at', 'asc')->get();
 
             // //金額を日付ごとに取得
-            // $this->posts = new Top();
-            // $expenses = $this->posts->getExpense();
-
+            for($i=1; $i <= $daysInMonth; $i++){
+                $dayAmounts[$i] = DB::table('expenses')
+                ->select('target_date')
+                ->selectRaw('SUM(expense) as sum_expense')
+                ->groupBy('target_date')
+                ->whereYear('target_date', $dt->format('Y'))
+                ->whereMonth('target_date', $dt->format('m'))
+                ->whereDay('target_date', $i)
+                ->first();
+                if($dayAmounts[$i] == null){
+                    $sc = new \stdClass();
+                    $sc->sum_expense = 0;
+                    $sc->target_date = $dt->format('Y-m-').$i;
+                    $dayAmounts[$i] = $sc;
+                }
+            }
             // //件数を取得
-            // $this->posts = new Top();
-            // $totalCounts = $this->posts->getCountExpense();
+            for($i=1; $i <= $daysInMonth; $i++){
+                $dayTotals[$i] = DB::table('expenses')
+                ->select('target_date')
+                ->selectRaw('COUNT(expense) as sum_expense')
+                ->groupBy('target_date')
+                ->whereYear('target_date', $dt->format('Y'))
+                ->whereMonth('target_date', $dt->format('m'))
+                ->whereDay('target_date', $i)
+                ->first();
+                if($dayTotals[$i] == null){
+                    $sc = new \stdClass();
+                    $sc->sum_expense = 0;
+                    $sc->target_date = $dt->format('Y-m-').$i;
+                    $dayTotals[$i] = $sc;
+                }
+            }
             
 
         }    
@@ -128,8 +189,11 @@ class TopController extends Controller
         //今月は何日まであるか
         $daysInMonth = $dt->daysInMonth;
 
-        
+        // dd($dayAmounts);
+
+
         for ($i = 1; $i <= $daysInMonth; $i++) {
+            // dd($dayAmounts);
             if($i==1){
                 if ($dt->format('N')!= 7) {
                     $calendar .= '<td colspan="'.($dt->format('N')).'"></td>'; //1日が日曜じゃない場合はcolspanでその分あける        
@@ -139,46 +203,42 @@ class TopController extends Controller
             if($dt->format('N') == 7){
                 $calendar .= '</tr><tr>'; //日曜日だったら改行
             }
+            
             $comp = new Carbon($dt->year."-".$dt->month."-".$dt->day); //ループで表示している日
-            $comp_now = Carbon::today(); //今日
-    
+            $comp_now = Carbon::today(); //今日    
            //ループの日と今日を比較
-           //if(データがない){
             if ($comp->eq($comp_now)) {
                //同じなので緑色の背景にする
-                $calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'</td>';
+                if ($dayTotals[$i]->sum_expense == 0) {
+                    $calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'</td>';
+                }else{
+                    $calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'<br><a href="/list_expense"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                }
             }else{
                 switch ($dt->format('N')) {
                     case 6:
-                        $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day.'</td>';
+                        if ($dayTotals[$i]->sum_expense == 0){
+                            $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day.'</td>';
+                        }else{
+                            $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day.'<br><a href="/list_expense"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                        }
                         break;
                     case 7:
-                        $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day.'</td>';
+                        if ($dayTotals[$i]->sum_expense == 0){
+                            $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day.'</td>';
+                        }else{
+                            $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day.'<br><a href="/list_expense"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                        }
                         break;
                     default:
-                        $calendar .= '<td class="day" >'.$dt->day.'</td>';
+                        if ($dayTotals[$i]->sum_expense == 0){
+                            $calendar .= '<td class="day" >'.$dt->day.'</td>';
+                        }else{
+                            $calendar .= '<td class="day" >'.$dt->day.'<br><a href="/list_expense"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                        }
                         break;
                 }
-            }
-        // }else{
-        //     if ($comp->eq($comp_now)) {
-        //         //同じなので緑色の背景にする
-        //         $calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'<br><a href="/list_expense"><span>件<br>円</span></a></td>';
-        //      }else{
-        //          switch ($dt->format('N')) {
-        //              case 6:
-        //                  $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day.'<br><a href="/list_expense"><span>件<br>円</span></a></td>';
-        //                  break;
-        //              case 7:
-        //                  $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day.'<br><a href="/list_expense"><span>件<br>円</span></a></td>';
-        //                  break;
-        //              default:
-        //                  $calendar .= '<td class="day" >'.$dt->day.'<br><a href="/list_expense"><span>件<br>円</span></a></td>';
-        //                  break;
-        //          }
-        //      }
-        //}
-    
+            }    
             $dt->addDay();
         }
 
@@ -193,7 +253,9 @@ class TopController extends Controller
             'calendar' => $title.$calendar,
             'monthAmount' => $monthAmount,
             'monthTotal' => $monthTotal,
-            'dayAmount' => $dayAmount,
+            'dayAmounts' => $dayAmounts,
+            'dayTotals' => $dayTotals,
+            'i' => $i,
         ]);
 
     
