@@ -67,16 +67,61 @@ main{
   display: flex;
 }
 
+/* 経費一覧画面のレイアウト */
+
+.list_total {
+  text-align: right;
+  font-size: 30px;
+  margin: 0 auto;
+  max-width: 80%;
+  padding: 1%;
+}
+
+.recode{
+  background-color: #FFFF99;
+}
+
 /* 経費登録画面のレイアウト */
 
 .apply_main{
   width: 500px;
-  margin-top: 50px;
+  margin: 50px;
 }
 
 .flex{
   display: flex;
   width:100%;
+  margin-bottom: 10px;
+}
+
+.block{
+  margin-right: 20px;
+  width: 150px;
+}
+
+.block2{
+  margin-right: 30px;
+  margin-left: 30px;
+  width: 100px;
+}
+
+.block2-height{
+  height: 34px;
+}
+
+label{
+  display: block;
+}
+
+input{
+  margin-bottom: 10px;
+}
+
+.apply-button{
+  margin: 15px 50px 0 80px;
+  border-radius: 50%;
+  height: 50px;
+  width: 100px;
 }
 
 /** 経費承認画面のレイアウト */
@@ -85,6 +130,10 @@ table th ,td {
   border:1px solid;
   height: 40px;
   padding: 10px
+}
+
+table{
+  margin: 20px;
 }
 
 th{
