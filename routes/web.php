@@ -37,7 +37,10 @@ Route::delete('/edit_expense/{expense_id}}',[App\Http\Controllers\ExpenseControl
 
 
 // 申請一覧画面
-Route::get('/list_expense', [ExpenseController::class, 'list_expense']);
+// サイドバーからの遷移
+Route::get('/list_expense/{user_id}', [ExpenseController::class, 'list_expense1']);
+// top画面からの遷移
+// Route::get('/list_expense/{user_id}/{target_date}', [ExpenseController::class, 'list_expense2']);
 
 
 // 経費登録画面
