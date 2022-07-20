@@ -132,17 +132,26 @@ class ExpenseController extends Controller
     {
         // urlから受け取ったidをパラメーターとしてDBから一件取得
         $expense = expense::find($expense_id);
-
+        //承認済みのステータスだと編集できない為flashmessage表示
         if($expense->status === 2){
             Session::flash('flash_message2', '承認済みの申請は編集できません');
             return redirect()->route('edit',$expense_id);
         }
-        // postされたものを入れる
+        // //バリデーション
+        $this->validate($request,[
+            'expelnation' => 'required|max:30',
+            'remarks' => 'required|max:30',
+            'expense' => 'required|max:10',
+        ]);
+
+        // postされた要素とDBの要素入紐付け
         $expense->target_date = $request->target_date;
         $expense->expense = $request->expense;
         $expense->classification_id = $request->classification_id;
         $expense->expelnation = $request->expelnation;
         $expense->remarks = $request->remarks;
+        $expense->status = 0;
+
         //保存したら遷移
         $expense->save();
         return redirect()->route('tops');

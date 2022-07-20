@@ -20,8 +20,8 @@ class TopController extends Controller
         */
     public function index(Request $request)
     {
-        $request->session()->put('id', 1);
-        $request->session()->put('role', 1);
+        // $request->session()->put('id', 1);
+        // $request->session()->put('role', 1);
 
         
         $m = (isset($_GET['m']))? htmlspecialchars($_GET['m'], ENT_QUOTES, 'utf-8') : '';

@@ -54,8 +54,10 @@ Route::get('/approve_expense', [ExpenseController::class, 'approve_expense']);
 Route::get('/approval/{id}', [ExpenseController::class, 'approval']);
 // 差戻しボタンを押した時の処理
 Route::get('/remand/{id}', [ExpenseController::class, 'remand']);
-
-
 //TOP画面
 Route::get('/tops', [App\Http\Controllers\TopController::class, 'index'])->name('tops');
 
+//会員情報変更画面を表示
+Route::get('/edit_member/{id}', [App\Http\Controllers\UserController::class, 'get_edit_member'])->middleware('login');
+//会員情報変更画面を表示
+Route::post('/edit_member/{id}', [App\Http\Controllers\UserController::class, 'edit_member'])->name('edit_member');
