@@ -24,9 +24,9 @@
     <select name="day_drop" id="">
         @for($d=1; $d<=31; $d++)
             @if($d == 20)
-                <option value="{{ $d }}" selected>{{$d}}月</option>
+                <option value="{{ $d }}" selected>{{$d}}日</option>
             @else
-                <option value="{{ $d }}" >{{$d}}月</option>
+                <option value="{{ $d }}" >{{$d}}日</option>
             @endif
         @endfor
     </select>

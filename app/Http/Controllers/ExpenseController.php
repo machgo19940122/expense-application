@@ -15,7 +15,7 @@ class ExpenseController extends Controller
     // 申請一覧画面
 
     // 申請一覧画面の表示(サイドバーから遷移してきた時)
-    public function list_expense1(Request $request, $user_id){
+    public function list_expense1(Request $request){
         $carbon = new Carbon();
 
         $role = $request->session()->get('role');
@@ -27,9 +27,9 @@ class ExpenseController extends Controller
                 ->get();
         }else{
             // 画面を表示しようとする人が一般従業員なら自分だけのテーブルを取得
-            $list = Expense::where('user_id','=',$user_id)
+            $list = Expense::where('user_id','=',$request->session()->get('id'))
                 ->whereYear('target_date', $carbon->year)
-                ->where('target_date', $carbon->month)
+                ->wheremonth('target_date', $carbon->month)
                 ->orderBy('target_date', 'asc')
                 ->get();
         }
@@ -47,7 +47,7 @@ class ExpenseController extends Controller
     }
 
     // 申請一覧画面の表示(top画面の日付から遷移してきた時)
-    public function list_expense2(Request $request ,$user_id, $target_date){
+    public function list_expense2(Request $request ,$target_date){
         $carbon = new Carbon();
 
         $role = $request->session()->get('role');
