@@ -59,3 +59,4 @@ Route::get('/remand/{id}', [ExpenseController::class, 'remand']);
 //TOP画面
 Route::get('/tops', [App\Http\Controllers\TopController::class, 'index'])->name('tops');
 
+

@@ -106,19 +106,43 @@ class TopController extends Controller
 
 
         }else{
-            if($user->role == 0 )
             //一般の場合、ログイン者のデータのみ取得
             $tops = Top::Where("id","=",$user_id )->orderBy('created_at', 'asc')->get();
 
+            //月の金額を取得
+
+            $monthAmount = DB::table('expenses')
+            ->selectRaw('SUM(expense) as sum_expense')
+            ->where('user_id', $user_id)
+            ->whereYear('target_date', $dt->format('Y'))
+            ->whereMonth('target_date', $dt->format('m'))
+            ->where('status', 2)
+            ->get();
+
+            if(empty($monthAmount[0]->sum_expense)){
+                $monthAmount[0]->sum_expense = 0;
+            }
+            //月の件数を取得
+
+            $monthTotal = DB::table('expenses')
+            ->selectRaw('COUNT(expense) as sum_expense')
+            ->where('user_id', $user_id)
+            ->whereYear('target_date', $dt->format('Y'))
+            ->whereMonth('target_date', $dt->format('m'))
+            ->where('status', 2)
+            ->get();
+        
             // //金額を日付ごとに取得
             for($i=1; $i <= $daysInMonth; $i++){
                 $dayAmounts[$i] = DB::table('expenses')
                 ->select('target_date')
                 ->selectRaw('SUM(expense) as sum_expense')
                 ->groupBy('target_date')
+                ->where('user_id', $user_id)
                 ->whereYear('target_date', $dt->format('Y'))
                 ->whereMonth('target_date', $dt->format('m'))
                 ->whereDay('target_date', $i)
+                ->where('status', 2)
                 ->first();
                 if($dayAmounts[$i] == null){
                     $sc = new \stdClass();
@@ -133,9 +157,11 @@ class TopController extends Controller
                 ->select('target_date')
                 ->selectRaw('COUNT(expense) as sum_expense')
                 ->groupBy('target_date')
+                ->where('user_id', $user_id)
                 ->whereYear('target_date', $dt->format('Y'))
                 ->whereMonth('target_date', $dt->format('m'))
                 ->whereDay('target_date', $i)
+                ->where('status', 2)
                 ->first();
                 if($dayTotals[$i] == null){
                     $sc = new \stdClass();
@@ -212,7 +238,8 @@ class TopController extends Controller
                 if ($dayTotals[$i]->sum_expense == 0) {
                     $calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'</td>';
                 }else{
-                    $calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'<br><a href="/list_expense"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                    $calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'<br><a href="/list_expense/$dt->year/$dt->month/$dt->day"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                    //$calendar .= '<td class="day" style="background-color:#008b8b;">'.$dt->day.'<br><a href="{{ url("list_expense/".$dt->year."/".$dt->month."/".$dt->day) }}"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
                 }
             }else{
                 switch ($dt->format('N')) {
@@ -220,21 +247,22 @@ class TopController extends Controller
                         if ($dayTotals[$i]->sum_expense == 0){
                             $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day.'</td>';
                         }else{
-                            $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day.'<br><a href="/list_expense"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                            
+                            $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day.'<br><a href="/list_expense/$dt->year/$dt->month/$dt->day"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
                         }
                         break;
                     case 7:
                         if ($dayTotals[$i]->sum_expense == 0){
                             $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day.'</td>';
                         }else{
-                            $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day.'<br><a href="/list_expense"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                            $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day.'<br><a href="/list_expense/$dt->year/$dt->month/$dt->day"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
                         }
                         break;
                     default:
                         if ($dayTotals[$i]->sum_expense == 0){
                             $calendar .= '<td class="day" >'.$dt->day.'</td>';
                         }else{
-                            $calendar .= '<td class="day" >'.$dt->day.'<br><a href="/list_expense"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                            $calendar .= '<td class="day" >'.$dt->day.'<br><a href="/list_expense/$dt->year/$dt->month/$dt->day"><span>'.$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
                         }
                         break;
                 }
