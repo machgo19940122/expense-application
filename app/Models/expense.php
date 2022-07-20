@@ -19,4 +19,8 @@ class Expense extends Model
     public function classification(){
         return $this->belongsTo('App\Models\Classification');
     }
+
+    public function user_id(){
+        return $this->belongsTo('App\Models\User');
+    }
 }

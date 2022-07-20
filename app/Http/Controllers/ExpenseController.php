@@ -8,19 +8,74 @@ use App\Models\Classification;
 use App\Models\User;
 use DB;
 use Session;
+use Carbon\Carbon;
 
 class ExpenseController extends Controller
 {
     // 申請一覧画面
 
-    // 申請一覧画面の表示
-    public function list_expense(){
-        // Expenseテーブルのレコードを全て取得する
-        $list = Expense::orderBy('target_date', 'asc')->get();
+    // 申請一覧画面の表示(サイドバーから遷移してきた時)
+    public function list_expense1(Request $request, $user_id){
+        $carbon = new Carbon();
 
+        $role = $request->session()->get('role');
+        if($role == 1){
+            // 画面を表示しようとする人が管理者ならばExpenseテーブルのレコードを全て取得する
+            $list = Expense::whereYear('target_date',$carbon->year)
+                ->whereMonth('target_date',$carbon->month)
+                ->orderBy('target_date', 'asc')
+                ->get();
+        }else{
+            // 画面を表示しようとする人が一般従業員なら自分だけのテーブルを取得
+            $list = Expense::where('user_id','=',$user_id)
+                ->whereYear('target_date', $carbon->year)
+                ->where('target_date', $carbon->month)
+                ->orderBy('target_date', 'asc')
+                ->get();
+        }
+
+        //　下部の件数、合計金額取得
+        $count = $list->count();
+        $total = $list->sum('expense');
 
         return view('expense.list_expense')->with([
             'list' => $list,
+            'count' => $count,
+            'total' => $total,
+            'carbon_month' => $carbon->month,
+        ]);
+    }
+
+    // 申請一覧画面の表示(top画面の日付から遷移してきた時)
+    public function list_expense2(Request $request ,$user_id, $target_date){
+        $carbon = new Carbon();
+
+        $role = $request->session()->get('role');
+        if($role == 1){
+            // 画面を表示しようとする人が管理者ならばExpenseテーブルのレコードを全て取得する
+            $list = Expense::whereYear('target_date', $carbon->year)
+                ->whereMonth('target_date',$carbon->month)
+                ->whereday('target_date', $target_date)
+                ->orderBy('target_date', 'asc')
+                ->get();
+        }else{
+            // 画面を表示しようとする人が一般従業員なら自分だけのテーブルを取得
+            $list = Expense::where('user_id','=',$user_id)
+                ->whereYear('target_date', $carbon->year)
+                ->whereMonth('target_date',$carbon->month)
+                ->whereday('target_date', $target_date)
+                ->orderBy('target_date', 'asc')
+                ->get();     
+        }
+
+        //　下部の件数、合計金額取得
+        $count = $list->count();
+        $total = $list->sum('expense');
+
+        return view('expense.list_expense')->with([
+            'list' => $list,
+            'count' => $count,
+            'total' => $total,
         ]);
     }
 
@@ -66,7 +121,7 @@ class ExpenseController extends Controller
 
             $expense->save();
 
-            redirect('tops.index');  
+            return redirect('/tops');  
         }
     }
 
