@@ -64,3 +64,4 @@ Route::get('/tops', [App\Http\Controllers\TopController::class, 'index'])->name(
 Route::get('/edit_member/{id}', [App\Http\Controllers\UserController::class, 'get_edit_member'])->middleware('login');
 //会員情報変更画面を表示
 Route::post('/edit_member/{id}', [App\Http\Controllers\UserController::class, 'edit_member'])->name('edit_member');
+

@@ -97,5 +97,33 @@ class expense extends Seeder
             'remarks' => '取引先訪問時のお土産として使用',
         ]);
         $expense->save();
+
+        // 7レコード
+        $expense = new \App\Models\expense([
+            'id' => '7',
+            'user_id' => '1',
+            'target_date' => '2022/07/05',
+            'status' => '2',
+            'name' => 'テック花子',
+            'expense' => '3500',
+            'classification_id' => '5',
+            'expelnation' => 'シャトレーゼに支払い',
+            'remarks' => '取引先訪問時のお土産として使用',
+        ]);
+        $expense->save();
+
+        // 8レコード
+        $expense = new \App\Models\expense([
+            'id' => '8',
+            'user_id' => '2',
+            'target_date' => '2022/07/05',
+            'status' => '2',
+            'name' => 'テック花子',
+            'expense' => '6500',
+            'classification_id' => '5',
+            'expelnation' => 'シャトレーゼに支払い',
+            'remarks' => '取引先訪問時のお土産として使用',
+        ]);
+        $expense->save();
     }
 }
