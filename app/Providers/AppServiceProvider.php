@@ -30,8 +30,8 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function($view) {
             $get_approval_expense=Expense::wherestatus(0)->where('expense', '>=', 1000)->get();
             $count_approval=count($get_approval_expense);
-            $view->with('count_approval',$count_approval);
+            $view->with('count_approval',(int)$count_approval);
           });
-      
+
     }
 }
