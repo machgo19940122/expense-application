@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-use App\Models\Expense;
+use App\Models\expense;
 use DB;
 use Illuminate\Support\ServiceProvider;
 //全ての画面に変数$count_approvalを渡すため
@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //全てのviewに$count_approval_expense変数渡す
         View::composer('*', function($view) {
-            $get_approval_expense=Expense::wherestatus(0)->where('expense', '>=', 1000)->get();
+            $get_approval_expense=expense::wherestatus(0)->where('expense', '>=', 1000)->get();
             $count_approval=count($get_approval_expense);
             $view->with('count_approval',(int)$count_approval);
           });
