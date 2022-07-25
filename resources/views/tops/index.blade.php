@@ -1,17 +1,10 @@
 
-<!DOCTYPE html>
-<html>
-<head>
-    @extends('common/header_side') 
-    <link rel="stylesheet" href="{{asset('/css/style.css')}}">
+@extends('common/header_side') 
+@section('index')
 
-</head>
-<body>
+<div class="main">
     {!! $calendar !!}
     <div class="total-data">合計 {{ $monthTotal[0]->sum_expense }} 件 {{ $monthAmount[0]->sum_expense }} 円</div>
+</div>
 
-
-    </tbody>
-</table>
-</body>
-</html>
+@endsection
