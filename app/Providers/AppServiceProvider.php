@@ -6,6 +6,8 @@ use DB;
 use Illuminate\Support\ServiceProvider;
 //全ての画面に変数$count_approvalを渡すため
 use Illuminate\Support\Facades\View; 
+//herokuのmigration
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,6 +39,8 @@ class AppServiceProvider extends ServiceProvider
           if(\App::environment(['production'])){
             \URL::forceScheme('https');
           }
+
+          Schema::defaultStringLength(191);
 
     }
 }
