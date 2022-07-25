@@ -33,5 +33,10 @@ class AppServiceProvider extends ServiceProvider
             $view->with('count_approval',(int)$count_approval);
           });
 
+          //heroku
+          if(\App::enviroment(['production'])){
+            \URL::forceScheme('https');
+          }
+
     }
 }
