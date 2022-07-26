@@ -1,35 +1,71 @@
 @extends('common/header_side')
 
 @section('list_expense')
-    <select name="year_drop" id="">
-        @for($y=2010; $y<=2030; $y++)
-            @if($y == 2022)
-                <option value="{{ $y }}" selected>{{$y}}年</option>
-            @else
-                <option value="{{ $y }}">{{$y}}年</option>
-            @endif
-        @endfor
-    </select>
 
-    <select name="month_drop" id="">
-        @for($m=1; $m<=12; $m++)
-            @if($m == 7)
-                <option value="{{ $m }}" selected>{{$m}}月</option>
-            @else
-                <option value="{{ $m }}" >{{$m}}月</option>
-            @endif
-        @endfor
-    </select>
+    <form action="{{url('list_date_form')}}" method="POST" class="mb-3" id="form_item">
+        @csrf
+        <select name="year_drop" id="year_drop">
+            @for($y=2010; $y<=2030; $y++)
+                @if($y == $carbon->year)
+                    <option value="{{ $y }}" selected>{{$y}}年</option>
+                @else
+                    <option value="{{ $y }}">{{$y}}年</option>
+                @endif
+            @endfor
+        </select>
 
-    <select name="day_drop" id="">
-        @for($d=1; $d<=31; $d++)
-            @if($d == 20)
-                <option value="{{ $d }}" selected>{{$d}}月</option>
-            @else
-                <option value="{{ $d }}" >{{$d}}月</option>
-            @endif
-        @endfor
-    </select>
+        <select name="month_drop" id="month_drop">
+            @for($m=1; $m<=12; $m++)
+                @if($m == $carbon->month)
+                    <option value="{{ $m }}" selected>{{$m}}月</option>
+                @else
+                    <option value="{{ $m }}" >{{$m}}月</option>
+                @endif
+            @endfor
+        </select>
+
+        <select name="day_drop" id="day_drop">
+            @for($d=1; $d<=31; $d++)
+                @if($d == $carbon->day)
+                    <option value="{{ $d }}" selected>{{$d}}日</option>
+                @else
+                    <option value="{{ $d }}" >{{$d}}日</option>
+                @endif
+            @endfor
+        </select>
+        <button type="submit">検索</button>
+    </form>
+
+    <!-- 日付のドロップダウンで年月を指定したときに日付が変わるjavascript追加（year_drop,month_dropを取得するためにformの後に書いた） -->
+    <script>
+        /**
+         * @brief 月の日数を返却します。
+         *
+         * @param [in] year 年
+         * @param [in] month 月
+         * @return 月の日数
+         */
+        function getLastDate(year, month) {
+            return new Date(year, month, 0).getDate();
+        }
+        // トリガーになる要素を取得
+        const year_date = document.getElementById('year_drop'); 
+        const month_date = document.getElementById('month_drop'); 
+        // getLastDate関数で取得した日数より大きい日付を見えなくする
+        function changeDay(){
+            const options = document.querySelectorAll('#day_drop > option')
+            const lastdate = getLastDate (year_date.value, month_date.value)
+            for(let i = 28; i <= lastdate; i++){
+                options[i-1].style.display = 'block';
+            }
+            for(let i = lastdate+1; i <= 31; i++){
+                options[i-1].style.display = 'none';
+            }
+        }
+        // 年月をドロップダウンで変更すると日付が変更されるイベント実装
+        year_date.addEventListener('change',changeDay);
+        month_date.addEventListener('change',changeDay);
+    </script>
 
     <table class="approve_table">
         <thead>
