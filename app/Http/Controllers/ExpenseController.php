@@ -47,23 +47,23 @@ class ExpenseController extends Controller
     }
 
     // 申請一覧画面の表示(top画面の日付から遷移してきた時)
-    public function list_expense2(Request $request, $dt){
+    public function list_expense2(Request $request, $year, $mon, $day){
         $carbon = new Carbon();
 
         $role = $request->session()->get('role');
         if($role == 1){
             // 画面を表示しようとする人が管理者ならばExpenseテーブルのレコードを全て取得する
-            $list = Expense::whereYear('target_date', '=', $dt->year)
-                ->whereMonth('target_date', '=', $dt->month)
-                ->whereDay('target_date',  '=', $dt->day)
+            $list = Expense::whereYear('target_date', '=', $year)
+                ->whereMonth('target_date', '=', $mon)
+                ->whereDay('target_date',  '=', $day)
                 ->orderBy('target_date', 'asc')
                 ->get();
         }else{
             // 画面を表示しようとする人が一般従業員なら自分だけのテーブルを取得
             $list = Expense::where('user_id','=',$request->session()->get('id'))
-                ->whereYear('target_date', '=', $dt->year)
-                ->whereMonth('target_date', '=', $dt->month)
-                ->whereDay('target_date', '=', $dt->day)
+                ->whereYear('target_date', '=', $year)
+                ->whereMonth('target_date', '=', $mon)
+                ->whereDay('target_date', '=', $day)
                 ->orderBy('target_date', 'asc')
                 ->get();     
         }

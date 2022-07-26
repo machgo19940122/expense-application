@@ -40,7 +40,7 @@ Route::delete('/edit_expense/{expense_id}}',[App\Http\Controllers\ExpenseControl
 // サイドバーからの遷移
 Route::get('/list_expense', [ExpenseController::class, 'list_expense1']);
 // top画面からの遷移
-Route::get('/list_expense', [ExpenseController::class, 'list_expense2']);
+Route::get('/list_expense/{year}/{mon}/{day}', [ExpenseController::class, 'list_expense2']);
 // 日付を指定して検索ボタンを押した時
 Route::post('/list_date_form', [ExpenseController::class, 'list_date_form']);
 
