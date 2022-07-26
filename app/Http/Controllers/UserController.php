@@ -54,7 +54,7 @@ class UserController extends Controller
             Session::put("role",$user[0]->role);
             //トップ画面に遷移
             return redirect()->route('tops');
-        // 不一致だったらエラー   
+        // 不一致だったらエラー 
         }else{
             $login_error=false;
             return view('user/login', ['login_error' => $login_error]);
@@ -99,11 +99,17 @@ public function edit_member(Request $request,int $id){
             $user->name = $request->user_name;
             //新たに入力のあったパスワードをhash化して保存
             $user->password = bcrypt($request->input('user_password'));
-            $user->save();
+            $user->save(); 
         }
-        //topに画面遷移
+        //edit_memberに画面遷移
         $request->session()->flush();
-        return redirect()->route('login');
+        Session::put("id",$user->id);
+        Session::put("name",$user->name);
+        Session::put("role",$user->role);
+        Session::flash('flash_message3', '会員情報を編集しました');
+        
+        return redirect()->route('edit_member',$user->id);
+       
     }
 }
         
