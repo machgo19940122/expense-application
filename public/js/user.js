@@ -1,11 +1,7 @@
-const side = document.getElementById('side_bar');
-side.classList.add('display_none');
 
-
-
+//パスワード表示・非表示
 var txtPass = document.getElementById("textPassword");
 var btnEye = document.getElementById("buttonEye");
-
 btnEye.addEventListener("click",(e) => {
   e.preventDefault(); 
   if (txtPass.type === "text") {

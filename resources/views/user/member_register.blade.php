@@ -55,5 +55,9 @@
         </div>
     </div>
 </div>
+
+<!--java script -->
 <script src="{{ asset('/js/user.js') }}"></script>
+<script>const side = document.getElementById('side_bar');
+side.classList.add('display_none');</script>
 @endsection
