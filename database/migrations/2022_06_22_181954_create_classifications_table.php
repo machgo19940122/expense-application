@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('classifications', function (Blueprint $table) {
             $table->integer('id')->index()->primary();
-            $table->string('classification',100)->index()->comment('区分(ジャンル)');
+            $table->string('classification',30)->index()->comment('区分(ジャンル)');
             $table->timestamps();
         });
     }
