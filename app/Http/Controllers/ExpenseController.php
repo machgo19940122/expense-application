@@ -198,7 +198,7 @@ class ExpenseController extends Controller
     //編集画面の表示 
     public function getedit (int $id){
       $classifications = Classification::all();
-      $expense = expense::find($id);
+      $expense = Expense::find($id);
       $status = [
                 "0"=>"未承認",
                 "1"=>"差し戻し",
@@ -211,7 +211,7 @@ class ExpenseController extends Controller
         'status'=>$status,
       ]);
 
-      $expense = expense::find($expense_id);
+      $expense = Expense::find($expense_id);
     }
 
 
@@ -222,7 +222,7 @@ class ExpenseController extends Controller
     public function edit(int $expense_id, request $request)
     {
         // urlから受け取ったidをパラメーターとしてDBから一件取得
-        $expense = expense::find($expense_id);
+        $expense = Expense::find($expense_id);
         //承認済みのステータスだと編集できない為flashmessage表示
         if($expense->status === 2){
             Session::flash('flash_message2', '承認済みの申請は編集できません');
@@ -251,7 +251,7 @@ class ExpenseController extends Controller
 //申請取り下げ
     public function delete(Request $request,int $expense_id){
         // urlから受け取ったidをパラメーターとしてDBから一件取得し、消去
-            expense::where('id',$expense_id)->delete();
+            Expense::where('id',$expense_id)->delete();
             return redirect()->route('tops');
     }
 }
