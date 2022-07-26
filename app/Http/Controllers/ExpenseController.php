@@ -132,7 +132,7 @@ class ExpenseController extends Controller
     public function apply_expense_form(Request $request){
         if($request -> has('cancel')){
              // キャンセルボタンを押した場合 -> 入力内容を無視してtop画面に遷移
-            redirect('tops.index');
+            return redirect('tops.index');
         }elseif($request -> has('application')){
             // 申請ボタンを押した場合 -> 入力者の名前と紐づき、申請一覧画面にデータを送りトップ画面に遷移
             $user = User :: where('id', '=', session()->get("id"))->first();
