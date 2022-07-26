@@ -2,6 +2,17 @@
 
 @section('content')
 
+ <!-- バリデーションエラーメッセージ-->
+@if ($errors->any())
+    <div class="alert alert-info">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
  <!-- フラッシュメッセージ 承認済みの申請は編集できません-->
  <script>
             @if (session('flash_message2'))
@@ -25,15 +36,15 @@
 
               <div class="form-group">
                 <label for="title">金額</label>
-                <input type="text" class="form-control" name="expense" id="expense" value="{{$expense->expense }}">
+                <input type="text" class="form-control" name="expense" id="expense" value="{{$expense->expense }}" maxlength="10">
               </div>
 
               <div class="form-group">
                 <label for="title" >項目</label>
                 <select name="classification_id" id="category" class="form-control">
                   @foreach($classifications as $classification)
-                  <option value="{{$classification->id}}" 
-                  <?php if($classification->id === (int)$expense->classification_id): ?>selected<?php endif ?>>
+                   <option value="{{$classification->id}}" 
+                   @if($classification->id === (int)$expense->classification_id) selected @endif >
                     {{$classification->id." : ".$classification->classification}}</option>
                   @endforeach
                 </select>
@@ -45,19 +56,19 @@
                 <select name="status" id="status" class="form-control" disabled>
                   @foreach($status as $key => $val)
                   <option value="{{$key}}" 
-                  <?php if($key === (int)$expense->status): ?>selected<?php endif ?>>{{$val}}</option>
+                  @if($key === (int)$expense->status) selected @endif>{{$val}}</option>
                   @endforeach
                 </select>
               </div>
 
               <div class="form-group">
                 <label for="explanation">説明</label>
-                <input type="text" class="form-control" name="expelnation" id="explanation" value="{{$expense->expelnation}}">
+                <input type="text" class="form-control" name="expelnation" id="explanation" value="{{$expense->expelnation}}" maxlength="30">
               </div>
 
               <div class="form-group">
                 <label for="date">備考欄</label>
-                <input type="text" class="form-control" name="remarks" id="remarks" value="{{$expense->remarks }}">
+                <input type="text" class="form-control" name="remarks" id="remarks" value="{{$expense->remarks }}" maxlength="30">
               </div>
 
 
@@ -66,14 +77,18 @@
                 <div class="btn-group">
                             <button type="submit" class="btn btn-primary">更新</button>
                 </div>   
+                          
             
       </form>
-                  <button class="btn btn-primary">更新キャンセル</button>
-                            
+                          <form action="{{route('tops')}}">
+                               <button class="btn btn-primary">編集キャンセル</button>
+                          </form>
+                         
+
                             <form action="{{ route('delete', ['expense_id' => $expense->id])}}" method="POST">
                             @csrf 
                             {{ method_field('DELETE') }}
-                   <button type="submit" class="btn btn-primary">申請取り下げ</button></form>
+                            <button type="submit" class="btn btn-primary" onClick="delete_alert(event);return false;">申請取り下げ</button></form>
                  
              </div>
           </div>
@@ -81,5 +96,6 @@
     
     </div>
   </div>
+  <script src="{{ asset('/js/expense.js') }}"></script>
 @endsection
 

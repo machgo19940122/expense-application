@@ -16,8 +16,8 @@ class UserController extends Controller
         // バリデーション
         $this->validate($request,[
             'role' => 'required',
-            'name' => 'required',
-            'password' => 'required',
+            'name' => 'required|max:100',
+            'password' => 'required|max:128',
         ]);
 
         // DBインサート
@@ -68,4 +68,42 @@ class UserController extends Controller
         Session::flash('flash_message', 'ログアウトしました');
         return redirect()->route('login');
     }  
+
+//会員情報編集ページの表示
+    public function get_edit_member (int $id){
+        $user = User::find($id);
+        return view('user/edit_member', [
+          'user'=>$user,
+        ]);
+      }
+
+//会員情報の編集
+public function edit_member(Request $request,int $id){  
+        //バリデーション
+        $validated=$request->validate([
+            'user_role' => 'required',
+            'user_name' => 'required|max:100',
+        ]);
+
+        $user = User::find($id);
+        //パスワード変更がない場合
+        if ($request->user_password == '') {
+            $user->role = $request->user_role;
+            $user->name = $request->user_name;
+            //再度hash化せず、そのまま保存
+            $user->password = $user->password;
+            $user->save();
+        }else{
+        //パスワード変更がある場合
+            $user->role = $request->user_role;
+            $user->name = $request->user_name;
+            //新たに入力のあったパスワードをhash化して保存
+            $user->password = bcrypt($request->input('user_password'));
+            $user->save();
         }
+        //topに画面遷移
+        $request->session()->flush();
+        return redirect()->route('login');
+    }
+}
+        

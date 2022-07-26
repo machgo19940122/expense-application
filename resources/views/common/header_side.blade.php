@@ -30,23 +30,20 @@
     </nav>
   </header>
 
-  <main>
-    <div class="side" id="side_bar">
-      <ul class="nav nav-stacked">
-        <li><a href="/tops">TOP</a></li>
-        <li><a href="/apply_expense">経費登録</a></li>
-        <li><a href="/list_expense/{{ session('id') }}">申請一覧</a></li>
-        @if(session('role')===1)
-        <li><a href="/approve_expense">経費承認 <span class="badge rounded-pill bg-primary">{{$count_approval}}件</span></a></button></li>
-        @endif
-        <li>
-          <a href="/logout">
-            <form action="{{ route('logout') }}" method="GET">ログアウト</form>
-          </a>
-        </li>
-      </ul>
+  <main>  
+    <div class="side" id="side_bar">  
+        <ul class="nav nav-stacked">
+                <li><a href="/tops">TOP</a></li>
+                <li ><a href="/apply_expense">経費登録</a></li>
+                <li><a href="/list_expense">申請一覧</a></li>
+                @if(session('role')===1)
+                  <li><a href="/approve_expense">経費承認 <span class="badge rounded-pill bg-primary">{{$count_approval}}件</span></a></button></li>
+                @endif
+                <li><a href="/edit_member/{{session('id')}}">会員情報変更</a></li>
+                <li><a href="/logout"><form  action="{{ route('logout') }}"method="GET">ログアウト</form></a></li>
+        </ul>
     </div>
-
+  
     <div class="main_content">
       @yield('content')
       @yield('apply_expense')
