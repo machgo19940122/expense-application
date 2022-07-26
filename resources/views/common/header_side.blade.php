@@ -48,6 +48,7 @@
       @yield('apply_expense')
       @yield('approve_expense')
       @yield('list_expense')
+      @yield('index')
     </div>
   </main>
     <script>
