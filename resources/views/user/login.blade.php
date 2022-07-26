@@ -1,14 +1,7 @@
 @extends('common/header_side')
 
 @section('content')
-        <!-- フラッシュメッセージ -->
-        <script>
-            @if (session('flash_message'))
-                $(function () {
-                        toastr.success('{{ session('flash_message') }}');
-                });
-            @endif
-        </script>
+
 
 <div class="container">
     <div class="row">
@@ -52,7 +45,16 @@
         </div>
     </div>
 </div>
-
+<!--java script -->
 <script src="{{ asset('/js/user.js') }}"></script>
+<script>const side = document.getElementById('side_bar');
+side.classList.add('display_none');</script>
+<!-- フラッシュメッセージ -->
+       <script>
+            @if (session('flash_message'))
+                $(function () {
+                               toastr.success('{{ session('flash_message') }}'); });
+           @endif
+       </script>
 
 @endsection
