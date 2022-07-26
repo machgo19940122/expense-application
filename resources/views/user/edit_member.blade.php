@@ -1,9 +1,9 @@
 @extends('common/header_side')
 
 @section('content')
- <!-- バリデーションエラーメッセージ-->
+<!-- バリデーションエラーメッセージ-->
 @if ($errors->any())
-    <div class="alert alert-info">
+  <div class="alert alert-info">
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -11,6 +11,7 @@
         </ul>
     </div>
 @endif
+
 <div class="container">
     <div>
       
@@ -18,6 +19,7 @@
           <div>会員情報編集</div>
             <form method="POST" action="{{ route('edit_member', $user->id) }}">
 
+            <label for="user_rule">ID</label>
              <input type="text" class="form-control" name="user_id" id="user_id" value="{{$user->id}}" disabled>
 
               <div class="form-group">
@@ -31,12 +33,13 @@
 
               <div class="form-group">
                 <label for="user_name">名前</label>
-                <input type="text" class="form-control" name="user_name" id="user_name" value="{{$user->name}}">
+                <input type="text" class="form-control" name="user_name" id="user_name" maxlength="100" value="{{$user->name}}">
               </div>
 
               <div class="form-group">
                 <label for="password" >パスワード</label>
-                <input type="password" class="form-control" name="user_password" id="textPassword" placeholder="パスワードを変更する場合のみ入力して下さい">
+                <input type="password" class="form-control" name="user_password" id="textPassword" maxlength="128" placeholder="パスワードを変更する場合のみ入力して下さい">
+                <span id="buttonEye" class="fa fa-eye"></span>
               </div>
               @csrf 
 
@@ -55,4 +58,12 @@
     </div>
   </div>
 
+ <!-- フラッシュメッセージ -->
+<script>
+  @if (session('flash_message3'))
+     $(function () {
+                    toastr.success('{{ session('flash_message3') }}');});
+  @endif
+</script>
+<script src="{{ asset('/js/user.js') }}"></script>
 @endsection
