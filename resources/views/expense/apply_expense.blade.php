@@ -3,7 +3,7 @@
 @section('apply_expense')
 
 <div class="apply_main">
-    <form action="{{url('apply_expense_form')}}" method="POST" class="mb-3" id="form_item">
+    <form action="{{url('apply_expense_form')}}" method="POST" class="mb-3" id="form_item" class="main-form">
         @csrf
         <div class="flex">
             <div class="block">
@@ -28,8 +28,8 @@
         <label for="Input4" class="form-label">備考</label>
         <input type="text" class="form-control" id="Input4" placeholder="30文字まで(交通費としてなど)" maxlength='30' name="remarks" required>
         <div class="flex">
-            <button type="submit" name="cancel" class="apply-button">キャンセル</button>
-            <button type="submit" name="application" class="apply-button">申請</button>
+            <button type="submit" name="cancel" class="btn btn-primary">キャンセル</button>
+            <button type="submit" name="application" class="btn btn-primary">申請</button>
         </div>
     </form>
 </div>

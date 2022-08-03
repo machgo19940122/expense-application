@@ -17,7 +17,7 @@
 <body>
   <header>
     <nav class="my-navbar">
-      <a class="my-navbar-brand" href="/">経費管理app(仮）</a>
+      <a class="my-navbar-brand" href="/">Expense Management System</a>
       <div class="my-navbar-control">
         @if(!Session::has('id'))
         <a class="my-navbar-item" href="{{ route('login') }}">ログイン</a>
