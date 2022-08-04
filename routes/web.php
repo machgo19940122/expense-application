@@ -14,7 +14,7 @@ use App\Http\Controllers\ExpenseController;
 |
 */
 
-Route::get('/', function () {return view('welcome');});
+Route::get('/', function () {return view('/user/login');});
 
 //登録画面表示
 Route::get('/register',function(){return view('user/member_register');})->name('register');
@@ -60,7 +60,7 @@ Route::get('/approval/{id}', [ExpenseController::class, 'approval']);
 // 差戻しボタンを押した時の処理
 Route::get('/remand/{id}', [ExpenseController::class, 'remand']);
 //TOP画面
-Route::get('/tops', [App\Http\Controllers\TopController::class, 'index'])->name('tops');
+Route::get('/tops', [App\Http\Controllers\TopController::class, 'index'])->name('tops')->middleware('login');
 
 //会員情報変更画面を表示
 Route::get('/edit_member/{id}', [App\Http\Controllers\UserController::class, 'get_edit_member'])->middleware('login');

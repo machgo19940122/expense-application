@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
+
 class user extends Seeder
 {
     /**
@@ -16,7 +17,7 @@ class user extends Seeder
     public function run()
     {
         // 1レコード
-        $user = new \App\Models\user([
+        $user = new \App\Models\User([
             'id' => '1',
             'role' => '0',
             'name' => '一般従業員',
