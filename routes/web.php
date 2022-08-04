@@ -14,7 +14,7 @@ use App\Http\Controllers\ExpenseController;
 |
 */
 
-Route::get('/', function () {return view('welcome');});
+Route::get('/', function () {return view('/user/login');});
 
 //登録画面表示
 Route::get('/register',function(){return view('user/member_register');})->name('register');
