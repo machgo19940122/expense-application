@@ -239,7 +239,7 @@ class TopController extends Controller
                 if ($dayTotals[$i]->sum_expense == 0) {
                     $calendar .= '<td class="day" style="background-color:#FAFAD2;">'.$dt->day.'</td>';
                 }else{
-                    $calendar .= '<td class="day" style="background-color:#FAFAD2;">'.$dt->day."<br><a href=\"list_expense/{$para}\"><span>".$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                    $calendar .= '<td class="day" style="background-color:#FAFAD2;">'.$dt->day."<br><a href=\"list_expense/{$para}\"><span>".$dayTotals[$i]->sum_expense.'件<br>'.number_format($dayAmounts[$i]->sum_expense).'円</span></a></td>';
                 }
             }else{
 
@@ -249,21 +249,21 @@ class TopController extends Controller
                         if ($dayTotals[$i]->sum_expense == 0){
                             $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day.'</td>';
                         }else{
-                            $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day."<br><a href=\"list_expense/{$para}\"><span>".$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                            $calendar .= '<td class="day" style="background-color:#b0e0e6">'.$dt->day."<br><a href=\"list_expense/{$para}\"><span>".$dayTotals[$i]->sum_expense.'件<br>'.number_format($dayAmounts[$i]->sum_expense).'円</span></a></td>';
                         }
                         break;
                     case 7:
                         if ($dayTotals[$i]->sum_expense == 0){
                             $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day.'</td>';
                         }else{
-                            $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day."<br><a href=\"list_expense/{$para}\"><span>".$dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                            $calendar .= '<td class="day" style="background-color:#f08080">'.$dt->day."<br><a href=\"list_expense/{$para}\"><span>".$dayTotals[$i]->sum_expense.'件<br>'.number_format($dayAmounts[$i]->sum_expense).'円</span></a></td>';
                         }
                         break;
                     default:
                         if ($dayTotals[$i]->sum_expense == 0){
                             $calendar .= '<td class="day" >'.$dt->day.'</td>';
                         }else{
-                            $calendar .= '<td class="day" >' . $dt->day ."<br><a href=\"list_expense/{$para}\"><span>" . $dayTotals[$i]->sum_expense.'件<br>'.$dayAmounts[$i]->sum_expense.'円</span></a></td>';
+                            $calendar .= '<td class="day" >' . $dt->day ."<br><a href=\"list_expense/{$para}\"><span>" . $dayTotals[$i]->sum_expense.'件<br>'.number_format($dayAmounts[$i]->sum_expense).'円</span></a></td>';
                         }
                         break;
                 }
