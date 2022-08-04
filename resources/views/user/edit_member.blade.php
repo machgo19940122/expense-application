@@ -15,9 +15,9 @@
 <div class="container">
     <div>
       
-        <nav>
+        <nav class="edit_member">
           <div>会員情報編集</div>
-            <form method="POST" action="{{ route('edit_member', $user->id) }}">
+            <form method="POST" action="{{ route('edit_member', $user->id) }}" >
 
             <label for="user_rule">ID</label>
              <input type="text" class="form-control" name="user_id" id="user_id" value="{{$user->id}}" disabled>

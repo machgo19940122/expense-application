@@ -7,14 +7,14 @@
         <table class="approve_table">
             <thead>
                 <tr>
-                    <th>名前</th>
-                    <th>日付</th>
-                    <th>項目</th>
-                    <th>金額</th>
-                    <th>支払い先</th>
-                    <th>備考</th>
-                    <th></th>
-                    <th></th>
+                <th class="name">名前</th>
+                <th class="list_expense-date">日付</th>
+                <th class="item">項目</th>
+                <th class="amount">金額</th>
+                <th class="payment-destination">支払い先</th>
+                <th class="remarks">備考</th>
+                <th class="edit"></th>
+                <th class="status"></th>
                 </tr>
             </thead>
             <tbody>

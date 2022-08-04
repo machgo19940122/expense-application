@@ -12,9 +12,6 @@
   border-collapse: collapse;
   table-layout: fixed;
   border: 1px solid black;
-  /* position: relative; */
-  /* top: 200; */
-  /* left: 50; */
 }
 .calendar-table th,
 .calendar-table td{
@@ -34,9 +31,7 @@
   font-size: 20px;
   margin: 0 auto;
   max-width: 30%;
-  /* position: relative; */
-  /* top: 200; */
-  /* left: 50; */
+
 }
 
 .month a {
@@ -57,14 +52,10 @@
 .date {
     font-size: 40px;
     text-align: center;
-    /* padding: 10px; */
-    /* position: relative; */
-    /* top: 200; */
-    /* left: 50; */
+
 }
 a.left {
     font-size: 20px;
-    /* padding: 10%; */
     width: 80px;
 }
 
@@ -75,25 +66,20 @@ a.right {
 td.day {vertical-align: top;}
 
 .total-data {
-    text-align: center;
-    font-size: 40px;
+    text-align: right;
+    font-size: 35px;
     margin: 0 auto;
     max-width: 80%;
-    border: 1px solid black;
-    padding: 1%;
-    /* position: relative; */
-    /* top: 200px; */
-    /* left: 50px; */
+    padding: 5px;
 }
 
 .main {
-  /* width: 90%;
-  margin: auto;
-  border: black solid; */
   margin: auto;
   width: 80%;
-  padding-left: 80px;
-}
+  position: absolute;
+  top: 100px;
+  left: 200px;
+  }
 
 /* ヘッダー */
 
@@ -127,9 +113,9 @@ a.my-navbar-item:hover {
 
 /* サイド */
 .side{
-  /* position: fixed; */
+  position: sticky;
   top:100px;
-  position: absolute;
+  white-space: nowrap;
 }
 
 .display_none{
@@ -142,8 +128,8 @@ main{
 }
 
 /* 新規登録画面 */
-.container{
-  margin: 0auto;
+.edit_member{
+  margin: auto;width: 500px;
 }
 
 /* login画面 */
@@ -154,6 +140,7 @@ main{
 .main_content{
   margin:
   auto;
+  width: 70%;
 }
 
 .btn_family{
@@ -165,8 +152,8 @@ main{
 .list_total {
   text-align: right;
   font-size: 30px;
-  margin: 0 auto;
-  max-width: 80%;
+  margin: auto;
+  max-width: 100%;
   padding: 1%;
 }
 
@@ -177,13 +164,13 @@ main{
 /* 経費登録画面のレイアウト */
 
 .apply_main{
-  width: 500px;
-  margin: 50px;
+  width: 650px;
+  margin: auto;
 }
 
 .flex{
   display: flex;
-  width:100%;
+  width: 100%;
   margin-bottom: 10px;
 }
 
@@ -236,14 +223,17 @@ th{
 /* 経費承認画面においてExpenseテーブルに未承認のレコードが無い場合のデザイン */
 .approve_null{
   border: solid 3px black;
-  padding: 100px;
+  padding: 50px;
+  text-align: center;
+  margin: auto;
+  width: 50%;
 }
 
 /*　スクロールバーの実装 */
 .approve_table {
   display: block;
   height: auto;
-  max-height: 350px;
+  max-height: 600px;
   overflow-y: scroll;
   border: 1px solid #000000;
   border-collapse: collapse;
@@ -256,5 +246,34 @@ th{
   background: #99FFFF;
 }
 
-
-
+/* 申請一覧画面と経費承認画面のレイアウト */
+.name {
+  width: 130px;
+}
+.list_expense-date{
+    width: 130px;
+}
+.item{
+    width: 100px;
+}
+.amount{
+    width: 120px;
+}
+.payment-destination{
+    width: 380px;
+}
+.remarks{
+    width: 380px;
+}
+.edit{
+    width: 70px;
+}
+.status{
+    width: 85px;
+}
+.list_expense-status{
+    width: 50px;
+}
+.td-status{
+    text-align: center;
+}

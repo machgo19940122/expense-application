@@ -1,12 +1,11 @@
 @extends('common/header_side')
 
 @section('list_expense')
-
     <form action="{{url('list_date_form')}}" method="POST" class="mb-3" id="form_item">
         @csrf
         <select name="year_drop" id="year_drop">
             @for($y=2010; $y<=2030; $y++)
-                @if($y == $carbon->year)
+                @if($y == $carbon->year) 
                     <option value="{{ $y }}" selected>{{$y}}年</option>
                 @else
                     <option value="{{ $y }}">{{$y}}年</option>
@@ -25,8 +24,13 @@
         </select>
 
         <select name="day_drop" id="day_drop">
+            @if($haihun == 1)
+                <option value="-" selected>-</option>
+            @else
+                <option value="-">-</option>
+            @endif
             @for($d=1; $d<=31; $d++)
-                @if($d == $carbon->day)
+                @if($d == $carbon->day && $haihun == 0)
                     <option value="{{ $d }}" selected>{{$d}}日</option>
                 @else
                     <option value="{{ $d }}" >{{$d}}日</option>
@@ -70,14 +74,14 @@
     <table class="approve_table">
         <thead>
             <tr>
-                <th>名前</th>
-                <th>日付</th>
-                <th>項目</th>
-                <th>金額</th>
-                <th>支払い先</th>
-                <th>備考</th>
-                <th></th>
-                <th></th>
+                <th class="name">名前</th>
+                <th class="list_expense-date">日付</th>
+                <th class="item">項目</th>
+                <th class="amount">金額</th>
+                <th class="payment-destination">支払い先</th>
+                <th class="remarks">備考</th>
+                <th class="edit"></th>
+                <th class="list_expense-status"></th>
             </tr>
         </thead>
         <tbody>
@@ -91,7 +95,7 @@
                 <td>{{$value->expelnation}}</td>
                 <td>{{$value->remarks}}</td>
                 <td><a href="/edit_expense/{{$value->id}}" class="approval_button"><button type="button">編集</button></a></td>
-                <td>@if($value->status == 0)
+                <td class="td-status">@if($value->status == 0)
                         未
                     @elseif($value->status == 1)
                         戻
@@ -103,7 +107,7 @@
             @endforeach
         </tbody>
     </table>
-    <div class="list_total">{{$count}} 件  合計 {{ number_format($total) }}円</div>
+    <div class="list_total">承認済みの申請 {{$count}} 件  合計 {{ number_format($total) }}円</div>
 
 
 
