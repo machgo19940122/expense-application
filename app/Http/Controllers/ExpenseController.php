@@ -35,20 +35,23 @@ class ExpenseController extends Controller
         }
 
         //　下部の件数、合計金額取得
-        $count = $list->count();
-        $total = $list->sum('expense');
+        $count = $list->where('status','=', '2')
+            ->count();
+        $total = $list->where('status','=', '2')
+            ->sum('expense');
 
         return view('expense.list_expense')->with([
             'list' => $list,
             'count' => $count,
             'total' => $total,
             'carbon' => $carbon,
+            'haihun' => 0
         ]);
     }
 
     // 申請一覧画面の表示(top画面の日付から遷移してきた時)
     public function list_expense2(Request $request, $year, $mon, $day){
-        $carbon = new Carbon();
+        $carbon = new Carbon($year.'-'.$mon.'-'.$day);
 
         $role = $request->session()->get('role');
         if($role == 1){
@@ -69,49 +72,79 @@ class ExpenseController extends Controller
         }
 
         //　下部の件数、合計金額取得
-        $count = $list->count();
-        $total = $list->sum('expense');
+        $count = $list->where('status','=', '2')
+            ->count();
+        $total = $list->where('status','=', '2')
+            ->sum('expense');
 
         return view('expense.list_expense')->with([
             'list' => $list,
             'count' => $count,
             'total' => $total,
             'carbon' => $carbon,
+            'haihun' => 0
         ]);
     }
 
     // 申請一覧画面で日付を指定し検索した時の処理
     public function list_date_form(Request $request){
         // 現在の日付を取得する、（）の中は検索された時に検索された日付を保持するコード
-        $carbon = new Carbon($request->year_drop.'-'.$request->month_drop.'-'.$request->day_drop);
-        
-        $role = $request->session()->get('role');
-        if($role == 1){
-            // 画面を表示しようとする人が管理者ならばExpenseテーブルの検索されたレコードを全て取得する
-            $list = Expense::whereYear('target_date', '=', $request->year_drop)
-                ->whereMonth('target_date', '=', $request->month_drop)
-                ->whereDay('target_date', '=', $request->day_drop)
-                ->orderBy('target_date', 'asc')
-                ->get();
+        $haihun = 0;
+        if($request->day_drop == "-"){
+            $carbon = new Carbon($request->year_drop.'-'.$request->month_drop);
+            $haihun = 1;
         }else{
-            // 画面を表示しようとする人が一般従業員なら自分だけの検索されたのレコードを取得
-            $list = Expense::where('user_id','=',$request->session()->get('id'))
-                ->whereYear('target_date', '=', $request->year_drop)
-                ->whereMonth('target_date', '=', $request->month_drop)
-                ->whereDay('target_date', '=', $request->day_drop)
-                ->orderBy('target_date', 'asc')
-                ->get();
+            $carbon = new Carbon($request->year_drop.'-'.$request->month_drop.'-'.$request->day_drop);
+        }
+
+        $role = $request->session()->get('role');
+
+        if($role == 1){
+            if($request->day_drop == '-'){
+                // 検索した人が管理者で日付が『-』の場合はExpenseテーブルの検索された月のレコードを取得する
+                $list = Expense::whereYear('target_date', '=', $request->year_drop)
+                    ->whereMonth('target_date', '=', $request->month_drop)
+                    ->orderBy('target_date', 'asc')
+                    ->get();
+            }else{
+                // 検索した人が管理者で年月日が指定されていたらExpenseテーブルの検索されたレコードを全て取得する
+                $list = Expense::whereYear('target_date', '=', $request->year_drop)
+                    ->whereMonth('target_date', '=', $request->month_drop)
+                    ->whereDay('target_date', '=', $request->day_drop)
+                    ->orderBy('target_date', 'asc')
+                    ->get();
+            }
+        }else{
+            if($request->day_drop == '-'){
+                // 検索した人が一般従業員で日付が『-』の場合はExpenseテーブルの検索された月のレコードを取得する
+                $list = Expense::where('user_id','=',$request->session()->get('id'))
+                    ->whereYear('target_date', '=', $request->year_drop)
+                    ->whereMonth('target_date', '=', $request->month_drop)
+                    ->orderBy('target_date', 'asc')
+                    ->get();
+            }else{
+                // 画面を表示しようとする人が一般従業員なら自分だけの検索されたのレコードを取得
+                $list = Expense::where('user_id','=',$request->session()->get('id'))
+                    ->whereYear('target_date', '=', $request->year_drop)
+                    ->whereMonth('target_date', '=', $request->month_drop)
+                    ->whereDay('target_date', '=', $request->day_drop)
+                    ->orderBy('target_date', 'asc')
+                    ->get();
+            }
         }
 
         //　下部の件数、合計金額取得
-        $count = $list->count();
-        $total = $list->sum('expense');
+        $count = $list->where('status','=', '2')
+            ->count();
+        $total = $list->where('status','=', '2')
+            ->sum('expense');
 
         return view('expense.list_expense')->with([
             'list' => $list,
             'count' => $count,
             'total' => $total,
             'carbon' => $carbon,
+            'haihun' => $haihun
         ]);
     }
 
@@ -132,7 +165,8 @@ class ExpenseController extends Controller
     public function apply_expense_form(Request $request){
         if($request -> has('cancel')){
              // キャンセルボタンを押した場合 -> 入力内容を無視してtop画面に遷移
-            redirect('tops.index');
+            return redirect('/tops');
+
         }elseif($request -> has('application')){
             // 申請ボタンを押した場合 -> 入力者の名前と紐づき、申請一覧画面にデータを送りトップ画面に遷移
             $user = User :: where('id', '=', session()->get("id"))->first();

@@ -1,12 +1,11 @@
 @extends('common/header_side')
 
 @section('list_expense')
-
     <form action="{{url('list_date_form')}}" method="POST" class="mb-3" id="form_item">
         @csrf
         <select name="year_drop" id="year_drop">
             @for($y=2010; $y<=2030; $y++)
-                @if($y == $carbon->year)
+                @if($y == $carbon->year) 
                     <option value="{{ $y }}" selected>{{$y}}年</option>
                 @else
                     <option value="{{ $y }}">{{$y}}年</option>
@@ -25,8 +24,13 @@
         </select>
 
         <select name="day_drop" id="day_drop">
+            @if($haihun == 1)
+                <option value="-" selected>-</option>
+            @else
+                <option value="-">-</option>
+            @endif
             @for($d=1; $d<=31; $d++)
-                @if($d == $carbon->day)
+                @if($d == $carbon->day && $haihun == 0)
                     <option value="{{ $d }}" selected>{{$d}}日</option>
                 @else
                     <option value="{{ $d }}" >{{$d}}日</option>
@@ -103,7 +107,7 @@
             @endforeach
         </tbody>
     </table>
-    <div class="list_total">{{$count}} 件  合計 {{ number_format($total) }}円</div>
+    <div class="list_total">承認済みの申請 {{$count}} 件  合計 {{ number_format($total) }}円</div>
 
 
 
