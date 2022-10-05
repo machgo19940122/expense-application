@@ -33,13 +33,14 @@ class UserController extends Controller
         return redirect()->route('login');
     }
 
+
 //ログイン機能
         public function postSignin(Request $request)
         { 
             //ログインエラー変数定義
             $login_error=null;
         //idが同じレコードをuser tableからgetする
-            $user = User::where('id', $request->id)->get();
+            $user = User::where('name', $request->name)->get();
 
         //１件もなければエラー
         if (count($user) === 0){
@@ -52,6 +53,7 @@ class UserController extends Controller
             Session::put("id",$user[0]->id);
             Session::put("name",$user[0]->name);
             Session::put("role",$user[0]->role);
+           
             //トップ画面に遷移
             return redirect()->route('tops');
         // 不一致だったらエラー 

@@ -18,9 +18,9 @@
                 <div>
                     <form method="POST" action="{{ route('signin') }}" >
                         <div>
-                            <label class="col-md-4 col-form-label text-md-end">社員番号</label>
+                            <label class="col-md-4 col-form-label text-md-end">名前</label>
                             <div class="col-md-6">
-                                <input id="id" name="id" type="text" name="id" class="form-control" maxlength="10" required autofocus>
+                                <input id="id" name="name" type="text" name="name" class="form-control" maxlength="10" required autofocus>
                             </div>
                         </div>
 
